@@ -17,10 +17,12 @@ public class ExternalApiService {
 
     private final RestClient restClient;
     private final String apiKey;
+    private final HotelsService hotelsService;
 
-    public ExternalApiService(RestClient restClient, @Value("${external.api.key}") String apiKey) {
+    public ExternalApiService(RestClient restClient, @Value("${external.api.key}") String apiKey, HotelsService hotelsService) {
         this.restClient = restClient;
         this.apiKey = apiKey;
+        this.hotelsService = hotelsService;
     }
 
     public List<HotelDto> getHotels(RequestDto requestDto){
@@ -52,6 +54,7 @@ public class ExternalApiService {
                 .body(JsonNode.class);
 
         List<HotelDto> hotels = jsonDataReader(response);
+        hotelsService.setHotels(hotels);
 
         return hotels;
     }
@@ -84,6 +87,8 @@ public class ExternalApiService {
         refactoredRequest.setCheckOutDate(requestDto.getCheckOutDate());
         refactoredRequest.setAdultsNumber(requestDto.getAdultsNumber());
         refactoredRequest.setRoomNumber(requestDto.getRoomNumber());
+        refactoredRequest.setHobbiesAndInterests(requestDto.getHobbiesAndInterests());
+        refactoredRequest.setPromptToOllama(requestDto.getPromptToOllama());
 
         return refactoredRequest;
     }

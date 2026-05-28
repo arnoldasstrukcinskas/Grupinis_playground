@@ -1,5 +1,7 @@
 package lt.viko.eif.astrukcinskas.grupinis_playground.controller;
 
+import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.RequestDto;
+import lt.viko.eif.astrukcinskas.grupinis_playground.service.ExternalApiService;
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.OllamaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +17,20 @@ public class OllamaController {
     @Autowired
     private final OllamaService ollamaService;
 
-    public OllamaController(OllamaService ollamaService) {
+    @Autowired
+    private final ExternalApiService externalApiService;
+
+
+    public OllamaController(OllamaService ollamaService, ExternalApiService externalApiService) {
         this.ollamaService = ollamaService;
+        this.externalApiService = externalApiService;
     }
 
     @GetMapping
-    public ResponseEntity<String> getResponse(@RequestParam String prompt){
-        String response = ollamaService.getResponse(prompt);
+    public ResponseEntity<String> getResponse(@RequestParam String userPrompt,
+                                              @RequestParam String interestsAndHobbies){
+
+        String response = ollamaService.getResponse(userPrompt, interestsAndHobbies);
 
         return ResponseEntity.ok(response);
     }

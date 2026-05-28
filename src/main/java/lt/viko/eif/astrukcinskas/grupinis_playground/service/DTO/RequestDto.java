@@ -1,6 +1,9 @@
 package lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO;
 
 public class RequestDto {
+
+    private String hobbiesAndInterests;
+    private String promptToOllama;
     private String locale = "en-gb";
     private String destinationType = "city";
     private int destinationId;
@@ -12,6 +15,26 @@ public class RequestDto {
     private String orderBy = "popularity";
     private String units = "metric";
     private Boolean includeAdjency = false;
+
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
+
+    public String getPromptToOllama() {
+        return promptToOllama;
+    }
+
+    public void setPromptToOllama(String promptToOllama) {
+        this.promptToOllama = promptToOllama;
+    }
+
+    public String getHobbiesAndInterests() {
+        return hobbiesAndInterests;
+    }
+
+    public void setHobbiesAndInterests(String hobbiesAndInterests) {
+        this.hobbiesAndInterests = hobbiesAndInterests;
+    }
 
     public String getLocale() {
         return locale;
