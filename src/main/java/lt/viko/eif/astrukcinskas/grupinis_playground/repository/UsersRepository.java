@@ -1,7 +1,11 @@
 package lt.viko.eif.astrukcinskas.grupinis_playground.repository;
 
-import lt.viko.eif.astrukcinskas.grupinis_playground.model.User;
+import lt.viko.eif.astrukcinskas.grupinis_playground.model.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UsersRepository extends JpaRepository<User, Integer> {
+import java.util.Optional;
+
+public interface UsersRepository extends JpaRepository<AppUser, Integer> {
+
+    Optional<AppUser> findByUsername(String username);
 }
