@@ -2,7 +2,7 @@ package lt.viko.eif.astrukcinskas.grupinis_playground.controller;
 
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.HotelDto;
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.LocationDto;
-import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.RequestDto;
+import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.HotelRequestDto;
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.ExternalApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ public class ExternalApiController {
     }
 
     @PostMapping
-    public ResponseEntity<List<HotelDto>> getHotels(@RequestBody RequestDto requestDto){
+    public ResponseEntity<List<HotelDto>> getHotels(@RequestBody HotelRequestDto requestDto){
         List<HotelDto> hotels = externalApiService.getHotels(requestDto);
 
         return ResponseEntity.ok(hotels);

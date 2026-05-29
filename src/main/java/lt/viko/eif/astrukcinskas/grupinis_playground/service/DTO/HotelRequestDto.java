@@ -1,6 +1,6 @@
 package lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO;
 
-public class RequestDto {
+public class HotelRequestDto {
 
     private String hobbiesAndInterests;
     private String promptToOllama;

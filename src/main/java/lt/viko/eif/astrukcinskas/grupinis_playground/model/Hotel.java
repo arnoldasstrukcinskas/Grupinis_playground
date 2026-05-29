@@ -1,7 +1,14 @@
 package lt.viko.eif.astrukcinskas.grupinis_playground.model;
 
+import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+
+@Entity
 public class Hotel {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
     private String hotelName;
     private String accomodationType;

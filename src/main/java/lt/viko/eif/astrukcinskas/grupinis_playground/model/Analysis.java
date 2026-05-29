@@ -21,12 +21,10 @@ public class Analysis {
     @Column(name = "id")
     private int id;
 
-    @Lob
     @Column(name = "ai_analysis", columnDefinition = "TEXT")
     private String analysis;
 
     @ManyToMany
-    @Column(name = "hotels")
     private List<Hotel> hotels;
 
     public int getId() {
