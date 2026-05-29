@@ -1,9 +1,10 @@
 package lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lt.viko.eif.astrukcinskas.grupinis_playground.model.Hotel;
 
 @JsonPropertyOrder({
+        "id",
         "hotelName",
         "accomodationType",
         "hotelStars",
@@ -24,58 +25,57 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 public class HotelDto {
 
-//    @JsonProperty("hotel_name")
+    private int id;
     private String hotelName;
-
-//    @JsonProperty("accommodation_type_name")
     private String accomodationType;
-
-//    @JsonProperty("class")
     private int hotelStars;
-
-//    @JsonProperty("district")
     private String district;
-
-//    @JsonProperty("distance_to_cc_formatted")
     private String distanceToCenter;
-
-//    @JsonProperty("is_beach_front")
     private boolean isBeachFront;
-
-//    @JsonProperty("amount_unrounded")
     private String price;
-
-//    @JsonProperty("amount_unrounded")// url
     private String priceAllInclusive;
-
-//    @JsonProperty("address")
     private String address;
-
-//    @JsonProperty("main_photo_url")
-    private String mainPhotoUrl; //main_photo_url
-
-//    @JsonProperty("max_photo_url")
+    private String mainPhotoUrl;
     private String maxPhotoUrl;
-
-//    @JsonProperty("max_1440_photo_url")
     private String PhotoUrl1440;
-
-//    @JsonProperty("url")
     private String hotelUrl;
 
     //Review section
-//    @JsonProperty("review_score")
     private double reviewScoreNumber;
-
-//    @JsonProperty("review_score_word")
     private String reviewScoreWord;
-
-//    @JsonProperty("review_nr")
     private int reviewNumber;
+    private String additionals;
 
-//    @JsonProperty("ribbon_text")
-    private String additionals; //ribon_text
+    public HotelDto() {}
 
+    public HotelDto(Hotel hotel) {
+        this.id = hotel.getId();
+        this.hotelName = hotel.getHotelName();
+        this.accomodationType = hotel.getAccomodationType();
+        this.hotelStars = hotel.getHotelStars();
+        this.district = hotel.getDistrict();
+        this.distanceToCenter = hotel.getDistanceToCenter();
+        this.isBeachFront = hotel.isBeachFront();
+        this.price = hotel.getPrice();
+        this.priceAllInclusive = hotel.getPriceAllInclusive();
+        this.address = hotel.getAddress();
+        this.mainPhotoUrl = hotel.getMainPhotoUrl();
+        this.maxPhotoUrl = hotel.getMaxPhotoUrl();
+        this.PhotoUrl1440 = hotel.getPhotoUrl1440();
+        this.hotelUrl = hotel.getHotelUrl();
+        this.reviewScoreNumber = hotel.getReviewScoreNumber();
+        this.reviewScoreWord = hotel.getReviewScoreWord();
+        this.reviewNumber = hotel.getReviewNumber();
+        this.additionals = hotel.getAdditionals();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getAddress() {
         return address;

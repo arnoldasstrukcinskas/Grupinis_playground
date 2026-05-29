@@ -2,7 +2,7 @@ package lt.viko.eif.astrukcinskas.grupinis_playground.service;
 
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.HotelDto;
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.LocationDto;
-import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.RequestDto;
+import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.HotelRequestDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -25,9 +25,9 @@ public class ExternalApiService {
         this.hotelsService = hotelsService;
     }
 
-    public List<HotelDto> getHotels(RequestDto requestDto){
+    public List<HotelDto> getHotels(HotelRequestDto requestDto){
 
-        RequestDto request = recreateRequest(requestDto);
+        HotelRequestDto request = recreateRequest(requestDto);
 
         System.out.println(request);
         JsonNode response = restClient.get()
@@ -54,6 +54,11 @@ public class ExternalApiService {
                 .body(JsonNode.class);
 
         List<HotelDto> hotels = jsonDataReader(response);
+
+        if(hotels == null){
+            hotels = new ArrayList<>();
+        }
+
         hotelsService.setHotels(hotels);
 
         return hotels;
@@ -79,9 +84,9 @@ public class ExternalApiService {
     }
 
     //Helpers
-    private RequestDto recreateRequest(RequestDto requestDto)
+    private HotelRequestDto recreateRequest(HotelRequestDto requestDto)
     {
-        RequestDto refactoredRequest = new RequestDto();
+        HotelRequestDto refactoredRequest = new HotelRequestDto();
         refactoredRequest.setDestinationId(requestDto.getDestinationId());
         refactoredRequest.setCheckInDate(requestDto.getCheckInDate());
         refactoredRequest.setCheckOutDate(requestDto.getCheckOutDate());

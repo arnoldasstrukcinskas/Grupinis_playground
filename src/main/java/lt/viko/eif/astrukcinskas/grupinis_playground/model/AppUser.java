@@ -8,9 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-//import java.util.List;
-//
-////@Table(name = "users")
+@Table(name = "users")
 @Entity
 public class AppUser implements UserDetails {
 
@@ -29,7 +27,6 @@ public class AppUser implements UserDetails {
     private String email;
 
     @ManyToMany
-    @Column(name = "analyses")
     private List<Analysis> analyses;
 
     @Override

@@ -5,6 +5,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,11 @@ public class OllamaService {
 
     public String getResponse(String userPrompt, String hobiesAndInterests){
         List<HotelDto> hotels = hotelsService.getHotels();
+
+        //For testing
+        if (hotels == null) {
+            hotels = new ArrayList<>();
+        }
 
         ObjectMapper objectMapper = new ObjectMapper();
         String hotelsJson = objectMapper.writeValueAsString(hotels);

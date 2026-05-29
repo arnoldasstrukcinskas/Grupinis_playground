@@ -33,11 +33,12 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**",
-                                "/swagger-ui.html",      // Nes tavo properties nurodo šį kelią
-                                "/swagger-ui/**",        // Paliekam dėl stiliaus failų
-                                "/api-docs/**",          // Nes tavo properties nurodo šį kelią
+                        .requestMatchers("/auth/**",    // uncoment on deploying
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/api-docs/**",
                                 "/").permitAll()
+//                        .requestMatchers("/**").permitAll()   // comment on deploying to turn off spring security
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
