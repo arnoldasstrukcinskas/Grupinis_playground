@@ -1,4 +1,19 @@
 /* Chat.module.css */
+:root {
+    --navy: #0D2B55;
+    --blue-m: #2260B4;
+    --blue-l: #3A7BD5;
+    --sky: #D6E8FA;
+    --sky-l: #EAF3FC;
+    --white: #FFFFFF;
+    --muted: #5A7BAA;
+    --green: #1E7E4A;
+    --green-h: #186040;
+    --red: #C0392B;
+    --red-h: #96301F;
+    --font: 'Inter',sans-serif;
+}
+
 .app {
     display: flex;
     height: 100vh;
@@ -7,27 +22,26 @@
 
 /* SIDEBAR */
 .sidebar {
-    width: 240px;
-    min-width: 240px;
+    width: 200px;
+    min-width: 200px;
     background: var(--navy);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 1.2rem;
-    overflow-y: auto;
 }
 
 .sideTop {
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: 8px;
 }
 
 .logo {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 1.4rem;
+    margin-bottom: 0.8rem;
 }
 
 .logoIcon {
@@ -46,129 +60,34 @@
     color: white;
 }
 
-.sideSection {
-    margin-bottom: 1rem;
+.saveMsg {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    background: rgba(30,126,74,0.3);
+    border-radius: 5px;
+    padding: 4px 6px;
 }
 
-.sideLabel {
-    font-size: 0.65rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 0.4rem;
+.hotelsStatus {
+    font-size: 0.7rem;
+    color: #81C784;
+    text-align: center;
 }
-
-.sideInput {
-    width: 100%;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 6px;
-    color: white;
-    font-size: 0.82rem;
-    padding: 0.55rem 0.8rem;
-    outline: none;
-    font-family: var(--font);
-}
-
-    .sideInput:focus {
-        border-color: rgba(255,255,255,0.3);
-    }
-
-    .sideInput::placeholder {
-        color: rgba(255,255,255,0.3);
-    }
-
-.sideTextarea {
-    width: 100%;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 6px;
-    color: white;
-    font-size: 0.82rem;
-    padding: 0.55rem 0.8rem;
-    outline: none;
-    resize: none;
-    font-family: var(--font);
-}
-
-    .sideTextarea::placeholder {
-        color: rgba(255,255,255,0.3);
-    }
-
-.locationWrap {
-    position: relative;
-}
-
-.locList {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0;
-    right: 0;
-    background: white;
-    border: 1px solid var(--sky);
-    border-radius: 6px;
-    z-index: 10;
-    max-height: 160px;
-    overflow-y: auto;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-    .locList li {
-        padding: 0.55rem 0.8rem;
-        font-size: 0.82rem;
-        color: var(--navy);
-        cursor: pointer;
-    }
-
-        .locList li:hover {
-            background: var(--sky-l);
-        }
-
-.btnGreen {
-    width: 100%;
-    padding: 0.6rem;
-    background: var(--green);
-    border: none;
-    border-radius: 6px;
-    color: white;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.2s;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    font-family: var(--font);
-}
-
-    .btnGreen:hover {
-        background: var(--green-h);
-    }
-
-    .btnGreen:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
 
 .btnBlue {
     width: 100%;
-    padding: 0.6rem;
+    padding: 0.55rem;
     background: var(--blue-m);
     border: none;
     border-radius: 6px;
     color: white;
     font-size: 0.72rem;
     font-weight: 500;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     cursor: pointer;
     transition: background 0.2s;
-    margin-bottom: 0.5rem;
     font-family: var(--font);
 }
 
@@ -178,18 +97,17 @@
 
 .btnRed {
     width: 100%;
-    padding: 0.6rem;
+    padding: 0.55rem;
     background: var(--red);
     border: none;
     border-radius: 6px;
     color: white;
     font-size: 0.72rem;
     font-weight: 500;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     cursor: pointer;
     transition: background 0.2s;
-    margin-bottom: 0;
     font-family: var(--font);
 }
 
@@ -198,16 +116,9 @@
     }
 
     .btnRed:disabled {
-        opacity: 0.5;
+        opacity: 0.4;
         cursor: not-allowed;
     }
-
-.saveMsg {
-    font-size: 0.7rem;
-    color: rgba(255,255,255,0.5);
-    text-align: center;
-    margin: -0.2rem 0 0.5rem;
-}
 
 .btnLogout {
     display: flex;
@@ -216,13 +127,12 @@
     gap: 6px;
     width: 100%;
     padding: 0.55rem;
-    background: rgba(192,57,43,0.25);
-    border: 1px solid rgba(192,57,43,0.4);
+    background: rgba(192,57,43,0.2);
+    border: 1px solid rgba(192,57,43,0.3);
     border-radius: 6px;
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.6);
     font-size: 0.72rem;
     font-weight: 500;
-    letter-spacing: 0.08em;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.2s;
@@ -258,7 +168,6 @@
     font-size: 1rem;
     font-weight: 600;
     color: var(--navy);
-    margin-right: 0.8rem;
 }
 
 .topBadge {
@@ -289,51 +198,304 @@
         border-radius: 4px;
     }
 
+/* WELCOME + SEARCH FLOW */
 .welcome {
-    text-align: center;
-    padding: 2.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 0;
 }
 
 .welcomeTitle {
     font-size: 1.3rem;
     font-weight: 600;
     color: var(--navy);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
 }
 
 .welcomeSub {
     font-size: 0.82rem;
     color: var(--muted);
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.8rem;
 }
 
-.chips {
+.searchFlow {
+    width: 100%;
+    max-width: 560px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
+    flex-direction: column;
+    gap: 1.2rem;
 }
 
-.chip {
-    padding: 0.45rem 1rem;
-    border: 1px solid var(--sky);
-    border-radius: 20px;
-    background: white;
+.stepRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.stepNum {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: white;
     font-size: 0.78rem;
-    color: var(--blue-m);
-    cursor: pointer;
-    transition: background 0.15s;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 22px;
+}
+
+.stepContent {
+    flex: 1;
+}
+
+.stepLabel {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+}
+
+.optional {
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #A0B8D8;
+}
+
+/* Location row */
+.locRow {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    position: relative;
+}
+
+.locInputWrap {
+    flex: 1;
+    position: relative;
+}
+
+.locInput {
+    width: 100%;
+    background: white;
+    border: 1px solid var(--sky);
+    border-radius: 8px;
+    color: var(--navy);
+    font-size: 0.88rem;
+    padding: 0.65rem 1rem;
+    outline: none;
+    transition: border-color 0.2s;
     font-family: var(--font);
 }
 
-    .chip:hover {
-        background: var(--sky-l);
+    .locInput:focus {
+        border-color: var(--blue-l);
     }
 
+    .locInput::placeholder {
+        color: #A0B8D8;
+    }
+
+.locConfirmed {
+    border-color: var(--green) !important;
+    background: #F0FBF4 !important;
+    color: var(--green) !important;
+    font-weight: 500;
+    padding-right: 2.5rem;
+}
+
+.btnLocReset {
+    position: absolute;
+    right: 0.7rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 2px;
+}
+
+    .btnLocReset:hover {
+        color: var(--red);
+    }
+
+.locList {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid var(--sky);
+    border-radius: 8px;
+    z-index: 20;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 16px rgba(13,43,85,0.12);
+    list-style: none;
+}
+
+    .locList li {
+        padding: 0.55rem 1rem;
+        font-size: 0.82rem;
+        color: var(--navy);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+        .locList li:hover {
+            background: var(--sky-l);
+        }
+
+.locName {
+    font-weight: 500;
+}
+
+.locCountry {
+    font-size: 0.72rem;
+    color: var(--muted);
+}
+
+/* Confirm location button — small green circle */
+.btnConfirmLoc {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 50%;
+    background: var(--green);
+    border: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+    .btnConfirmLoc:hover {
+        background: var(--green-h);
+    }
+
+    .btnConfirmLoc:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+
+/* Dates row */
+.datesRow {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.dateField {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dateLabel {
+    font-size: 0.65rem;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.dateInput {
+    background: white;
+    border: 1px solid var(--sky);
+    border-radius: 8px;
+    color: var(--navy);
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: var(--font);
+}
+
+    .dateInput:focus {
+        border-color: var(--blue-l);
+    }
+
+.dateArrow {
+    color: var(--muted);
+    font-size: 1.1rem;
+    padding-bottom: 0.5rem;
+}
+
+/* Interests */
+.interestsInput {
+    width: 100%;
+    background: white;
+    border: 1px solid var(--sky);
+    border-radius: 8px;
+    color: var(--navy);
+    font-size: 0.88rem;
+    padding: 0.65rem 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: var(--font);
+}
+
+    .interestsInput:focus {
+        border-color: var(--blue-l);
+    }
+
+    .interestsInput::placeholder {
+        color: #A0B8D8;
+    }
+
+/* Search button */
+.btnSearch {
+    width: 100%;
+    padding: 0.85rem;
+    background: var(--green);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--font);
+    margin-top: 0.5rem;
+}
+
+    .btnSearch:hover {
+        background: var(--green-h);
+    }
+
+    .btnSearch:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+.formError {
+    font-size: 0.78rem;
+    color: var(--red);
+    text-align: center;
+}
+
+/* MESSAGES */
 .msg {
     display: flex;
     gap: 10px;
-    max-width: 700px;
+    max-width: 760px;
 }
 
 .user {
@@ -507,6 +669,127 @@
     margin-top: 0.4rem;
 }
 
+/* HOTEL CARDS */
+.hotelGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    width: 100%;
+    max-width: 900px;
+}
+
+.hotelCard {
+    background: white;
+    border: 1px solid var(--sky);
+    border-radius: 10px;
+    padding: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+    .hotelCard:hover {
+        border-color: var(--blue-l);
+        box-shadow: 0 2px 12px rgba(13,43,85,0.08);
+    }
+
+.hotelSaved {
+    border-color: var(--green) !important;
+    background: #F0FBF4;
+}
+
+.hotelCardHead {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 0.7rem;
+}
+
+.hotelName {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+
+.stars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.starFilled {
+    color: #F5A623;
+    font-size: 0.8rem;
+}
+
+.starEmpty {
+    color: #D0D8E8;
+    font-size: 0.8rem;
+}
+
+.starNum {
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-left: 3px;
+}
+
+.hotelLines {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+    .hotelLines li {
+        font-size: 0.75rem;
+        color: var(--muted);
+        line-height: 1.4;
+        padding-left: 10px;
+        position: relative;
+    }
+
+        .hotelLines li::before {
+            content: '·';
+            position: absolute;
+            left: 0;
+            color: var(--blue-l);
+        }
+
+.btnSaveCard {
+    flex-shrink: 0;
+    padding: 3px 10px;
+    background: var(--green);
+    border: none;
+    border-radius: 5px;
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: var(--font);
+}
+
+    .btnSaveCard:hover {
+        background: var(--green-h);
+    }
+
+.btnSaved {
+    flex-shrink: 0;
+    padding: 3px 10px;
+    background: none;
+    border: 1px solid var(--green);
+    border-radius: 5px;
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--green);
+    cursor: default;
+    font-family: var(--font);
+}
+
+/* Spinners */
 .spinner {
     width: 14px;
     height: 14px;
@@ -516,8 +799,213 @@
     animation: spin 0.7s linear infinite;
 }
 
+.spinnerSm {
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+}
+
 @keyframes spin {
     to {
         transform: rotate(360deg);
     }
+}
+
+/* Combo (kept for location list) */
+.comboWrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.comboInput {
+    background: white;
+    border: 1px solid var(--sky);
+    border-radius: 6px;
+    color: var(--navy);
+    font-size: 0.82rem;
+    padding: 0.5rem 0.75rem;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: var(--font);
+}
+
+    .comboInput:focus {
+        border-color: var(--blue-l);
+    }
+
+    .comboInput::placeholder {
+        color: #A0B8D8;
+    }
+
+.comboList {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid var(--sky);
+    border-radius: 6px;
+    z-index: 20;
+    max-height: 180px;
+    overflow-y: auto;
+    box-shadow: 0 4px 16px rgba(13,43,85,0.12);
+    list-style: none;
+}
+
+    .comboList li {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.82rem;
+        color: var(--navy);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+        .comboList li:hover {
+            background: var(--sky-l);
+        }
+
+.comboActive {
+    background: var(--sky-l) !important;
+    font-weight: 500;
+}
+
+.comboSub {
+    font-size: 0.7rem;
+    color: var(--muted);
+}
+
+/* Form grid (kept for compatibility) */
+.formGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    max-width: 640px;
+    margin-top: 1rem;
+    text-align: left;
+}
+
+.formField {
+    display: flex;
+    flex-direction: column;
+}
+
+.fullWidth {
+    grid-column: 1 / -1;
+}
+
+.fieldLabel {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+.formInput {
+    background: white;
+    border: 1px solid var(--sky);
+    border-radius: 6px;
+    color: var(--navy);
+    font-size: 0.82rem;
+    padding: 0.5rem 0.75rem;
+    outline: none;
+    font-family: var(--font);
+    transition: border-color 0.2s;
+}
+
+    .formInput:focus {
+        border-color: var(--blue-l);
+    }
+
+    .formInput::placeholder {
+        color: #A0B8D8;
+    }
+
+.btnLoadHotels {
+    width: 100%;
+    max-width: 640px;
+    padding: 0.85rem;
+    background: var(--green);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1rem;
+    font-family: var(--font);
+}
+
+    .btnLoadHotels:hover {
+        background: var(--green-h);
+    }
+
+    .btnLoadHotels:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+.formError {
+    font-size: 0.78rem;
+    color: var(--red);
+    margin-top: 0.5rem;
+    max-width: 640px;
+    width: 100%;
+    text-align: center;
+}
+
+.hotelsStatus {
+    font-size: 0.72rem;
+    color: #2E7D32;
+    background: #E8F5E9;
+    border: 1px solid #A5D6A7;
+    border-radius: 5px;
+    padding: 4px 8px;
+    text-align: center;
+}
+
+/* Save all button */
+.btnSaveAll {
+    margin-top: 12px;
+    padding: 0.6rem 1.4rem;
+    background: var(--green);
+    border: none;
+    border-radius: 7px;
+    color: white;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: var(--font);
+}
+
+    .btnSaveAll:hover {
+        background: var(--green-h);
+    }
+
+.btnSavedAll {
+    margin-top: 12px;
+    padding: 0.6rem 1.4rem;
+    background: none;
+    border: 1px solid var(--green);
+    border-radius: 7px;
+    color: var(--green);
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: default;
+    font-family: var(--font);
 }

@@ -100,12 +100,16 @@ public class AnalysisService {
     public int removeAnalysisFromDb(int id){
         Analysis analysis = getAnalysisById(id);
 
-        List<Integer> hotelsIds = new ArrayList<>();
+        // Remove from user's analyses list FIRST (fixes foreign key constraint)
+        AppUser user = usersRepository.findByUsername(getUsernameFromAuth()).orElseThrow();
+        user.getAnalyses().removeIf(a -> a.getId() == id);
+        usersRepository.save(user);
 
+        // Now safe to delete hotels and analysis
+        List<Integer> hotelsIds = new ArrayList<>();
         List<Hotel> hotels = analysis.getHotels();
 
-        if(hotels.isEmpty())
-        {
+        if(hotels == null || hotels.isEmpty()) {
             hotels = new ArrayList<>();
         }
 

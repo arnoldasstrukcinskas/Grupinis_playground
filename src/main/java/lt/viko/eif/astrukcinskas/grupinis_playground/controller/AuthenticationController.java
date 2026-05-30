@@ -33,7 +33,7 @@ public class AuthenticationController {
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto) throws AuthenticationException {
         var response = authenticationService.login(loginDto);
 
-        return ResponseEntity.ok("User logged in");
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/logout")

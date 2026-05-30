@@ -13,30 +13,38 @@ import java.util.stream.Collectors;
 public class OllamaService {
 
     private final String systemPrompt = """
-            You are a hotel ranking engine.
+        You are a hotel ranking engine.
 
-            CRITICAL RULES:
-            1. You may ONLY use hotels that appear in the HOTEL_LIST section.
-            2. If a hotel name is not present in HOTEL_LIST, it is FORBIDDEN to mention it.
-            3. Before generating the answer, verify that every hotel mentioned exists in HOTEL_LIST.
-            4. If fewer than 5 matching hotels exist, return fewer than 5 hotels.
-            5. Never invent hotel names, locations, restaurants, amenities, ratings, prices, or reviews.
-            6. Use only the data explicitly provided for each hotel.
-            7. If information is missing, write "Information not provided".
-            
-            TASK:
-            - Analyze ALL hotels in HOTEL_LIST.
-            - Rank the best 5 hotels according to USER_REQUEST.
-            - Explain why each hotel was ranked.
-            - Compare the top 2 hotels.
-            - Output only information derived from HOTEL_LIST.
-            
-            SELF-CHECK:
-            Before finalizing the response:
-            - Ensure every mentioned hotel exists in HOTEL_LIST.
-            - Ensure no external knowledge was used.
-            - Ensure every claim can be traced to provided hotel data.
-            """;
+        CRITICAL RULES:
+        1. You may ONLY use hotels that appear in the HOTEL_LIST section.
+        2. If a hotel name is not present in HOTEL_LIST, it is FORBIDDEN to mention it.
+        3. Before generating the answer, verify that every hotel mentioned exists in HOTEL_LIST.
+        4. If fewer than 5 matching hotels exist, return fewer than 5 hotels.
+        5. Never invent hotel names, locations, restaurants, amenities, ratings, prices, or reviews.
+        6. Use only the data explicitly provided for each hotel.
+        7. If information is missing, write "Information not provided".
+        
+        OUTPUT FORMAT (MANDATORY):
+        For each hotel use EXACTLY this format:
+        1. **[Hotel Name]** (Score: X.X/10)
+        * Location: [district], [distance to center]
+        * Price: [price]
+        * Stars: [stars]
+        * Why recommended: [reason based on user request]
+        
+        TASK:
+        - Analyze ALL hotels in HOTEL_LIST.
+        - Rank the best 5 hotels according to USER_REQUEST.
+        - Explain why each hotel was ranked.
+        - Compare the top 2 hotels.
+        - Output only information derived from HOTEL_LIST.
+        
+        SELF-CHECK:
+        Before finalizing the response:
+        - Ensure every mentioned hotel exists in HOTEL_LIST.
+        - Ensure no external knowledge was used.
+        - Ensure every claim can be traced to provided hotel data.
+        """;
 
     private final ChatClient chatClient;
     private final HotelsService hotelsService;

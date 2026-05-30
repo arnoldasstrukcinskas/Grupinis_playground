@@ -12,14 +12,8 @@
     padding: 0.9rem 1.5rem;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-}
-
-.headerLeft {
-    display: flex;
-    align-items: center;
     gap: 1rem;
+    flex-shrink: 0;
 }
 
 .backBtn {
@@ -29,7 +23,7 @@
     background: none;
     border: none;
     color: var(--blue-m);
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 500;
     cursor: pointer;
     font-family: var(--font);
@@ -44,6 +38,7 @@
     font-size: 1.1rem;
     font-weight: 600;
     color: var(--navy);
+    flex: 1;
 }
 
 .count {
@@ -57,7 +52,7 @@
 
 .errorBanner {
     background: #FFEBEE;
-    border: 1px solid #EF9A9A;
+    border-bottom: 1px solid #EF9A9A;
     padding: 0.6rem 1.5rem;
     font-size: 0.8rem;
     color: #C62828;
@@ -71,8 +66,8 @@
 
 /* LIST */
 .list {
-    width: 280px;
-    min-width: 280px;
+    width: 260px;
+    min-width: 260px;
     background: white;
     border-right: 1px solid var(--sky);
     overflow-y: auto;
@@ -88,7 +83,7 @@
         border-radius: 3px;
     }
 
-.dimText {
+.dim {
     font-size: 0.82rem;
     color: var(--muted);
     padding: 1rem;
@@ -103,58 +98,69 @@
     line-height: 1.7;
 }
 
-.item {
-    padding: 0.85rem 0.9rem;
+.listItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 0.8rem 0.8rem;
     border-radius: 8px;
     border: 1px solid var(--sky);
     margin-bottom: 6px;
     cursor: pointer;
-    position: relative;
     transition: background 0.15s, border-color 0.15s;
 }
 
-    .item:hover {
+    .listItem:hover {
         background: var(--sky-l);
         border-color: var(--blue-l);
     }
 
-    .item.active {
-        background: var(--sky-l);
-        border-color: var(--blue-m);
-    }
-
-.itemId {
-    font-size: 0.68rem;
-    font-weight: 600;
-    color: var(--blue-m);
-    margin-bottom: 4px;
-    letter-spacing: 0.05em;
+.listItemActive {
+    background: var(--sky-l) !important;
+    border-color: var(--blue-m) !important;
 }
 
-.itemPreview {
-    font-size: 0.78rem;
+.listItemInner {
+    flex: 1;
+    min-width: 0;
+}
+
+.listItemTitle {
+    font-size: 0.8rem;
+    font-weight: 600;
     color: var(--navy);
-    line-height: 1.4;
-    padding-right: 24px;
+    margin-bottom: 3px;
+}
+
+.listItemPreview {
+    font-size: 0.73rem;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .deleteBtn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
     background: none;
     border: none;
     cursor: pointer;
     color: var(--muted);
-    padding: 3px;
+    padding: 2px;
     border-radius: 4px;
     display: flex;
+    flex-shrink: 0;
+    margin-top: 2px;
     transition: background 0.15s, color 0.15s;
 }
 
     .deleteBtn:hover {
         background: var(--red);
         color: white;
+    }
+
+    .deleteBtn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
     }
 
 /* DETAIL */
@@ -175,6 +181,7 @@
 
 .detailEmpty {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100%;
@@ -184,14 +191,14 @@
 }
 
 .detailContent {
-    max-width: 700px;
+    max-width: 800px;
 }
 
 .detailHead {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.4rem;
 }
 
 .detailTitle {
@@ -200,7 +207,7 @@
     color: var(--navy);
 }
 
-.btnRed {
+.btnDelete {
     padding: 0.45rem 1rem;
     background: var(--red);
     border: none;
@@ -215,7 +222,7 @@
     font-family: var(--font);
 }
 
-    .btnRed:hover {
+    .btnDelete:hover {
         background: var(--red-h);
     }
 
@@ -225,44 +232,110 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.8rem;
 }
 
+/* Hotel grid */
+.hotelGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.hotelCard {
+    background: white;
+    border: 1px solid var(--sky);
+    border-radius: 10px;
+    padding: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+    .hotelCard:hover {
+        border-color: var(--blue-l);
+        box-shadow: 0 2px 12px rgba(13,43,85,0.08);
+    }
+
+.hotelName {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+}
+
+.stars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 0.5rem;
+}
+
+.starFilled {
+    color: #F5A623;
+    font-size: 0.8rem;
+}
+
+.starEmpty {
+    color: #D0D8E8;
+    font-size: 0.8rem;
+}
+
+.starNum {
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-left: 3px;
+}
+
+.hotelLines {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+    .hotelLines li {
+        font-size: 0.74rem;
+        color: var(--muted);
+        line-height: 1.4;
+        padding-left: 10px;
+        position: relative;
+    }
+
+        .hotelLines li::before {
+            content: '·';
+            position: absolute;
+            left: 0;
+            color: var(--blue-l);
+        }
+
+/* Plain text analysis */
 .analysisBox {
     background: white;
     border: 1px solid var(--sky);
     border-radius: 10px;
     padding: 1.2rem 1.4rem;
-    margin-bottom: 1.2rem;
 }
 
 .analysisText {
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     line-height: 1.75;
     color: var(--navy);
     white-space: pre-wrap;
 }
 
-.hotelsBox {
-    background: white;
-    border: 1px solid var(--sky);
-    border-radius: 10px;
-    padding: 1.2rem 1.4rem;
+.spinner {
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(192,57,43,0.3);
+    border-top-color: var(--red);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
 }
 
-.hotelLink {
-    display: block;
-    font-size: 0.8rem;
-    color: var(--blue-m);
-    padding: 0.3rem 0;
-    border-bottom: 1px solid var(--sky-l);
-    transition: color 0.15s;
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
-
-    .hotelLink:hover {
-        color: var(--navy);
-    }
-
-    .hotelLink:last-child {
-        border-bottom: none;
-    }
