@@ -114,15 +114,290 @@ function HotelCard({ hotel }) {
     );
 }
 
-function AIMessage({ text, onSaveAll, saved }) {
-    const hotels = parseHotels(text);
-    if (hotels && hotels.length >= 2) {
+/* ── Hotel Detail Modal ── */
+function HotelModal({ hotel, onClose }) {
+    const h = hotel?.content ?? hotel;
+    // Upgrade Booking.com image to highest resolution
+    const upgradePhoto = (url) => {
+        if (!url) return null;
+        // Replace any size suffix with max resolution
+        return url
+            .replace(/square\d+/, 'max1280x900')
+            .replace(/max\d+x\d+/, 'max1280x900')
+            .replace(/\/\/[a-z]+\.bstatic\.com/, '//cf.bstatic.com');
+    };
+    const photo = upgradePhoto(h.maxPhotoUrl) || upgradePhoto(h.photoUrl1440) || upgradePhoto(h.mainPhotoUrl);
+    const scoreColor = h.reviewScoreNumber >= 9 ? '#1B5E20' : h.reviewScoreNumber >= 8 ? '#2E7D32' : '#1565C0';
+
+    // Close on backdrop click
+    const handleBackdrop = (e) => { if (e.target === e.currentTarget) onClose(); };
+
+    return (
+        <div className={s.modalBg} onClick={handleBackdrop}>
+            <div className={s.modalBox}>
+                <button className={s.modalClose} onClick={onClose}>✕</button>
+
+                {photo && (
+                    <div className={s.modalPhoto}>
+                        <img src={photo} alt={h.hotelName}
+                            onError={e => e.target.parentElement.style.display = 'none'} />
+                        {h.reviewScoreNumber > 0 && (
+                            <div className={s.modalScore} style={{ background: scoreColor }}>
+                                <span className={s.scoreNum}>{h.reviewScoreNumber.toFixed(1)}</span>
+                                <span className={s.scoreWord}>
+                                    {h.reviewScoreNumber >= 9 ? 'Exceptional' : h.reviewScoreNumber >= 8 ? 'Excellent' : h.reviewScoreNumber >= 7 ? 'Good' : 'Fair'}
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                <div className={s.modalBody}>
+                    {/* Header */}
+                    <div className={s.modalHeader}>
+                        <div>
+                            <h2 className={s.modalTitle}>{h.hotelName}</h2>
+                            <div className={s.modalMeta}>
+                                {h.accomodationType && <span className={s.accomType}>{h.accomodationType}</span>}
+                                {h.hotelStars > 0 && <span className={s.starStr}>{'★'.repeat(Math.min(h.hotelStars, 5))}</span>}
+                                {h.isBeachFront && <span className={s.beachTag}>🏖 Beachfront</span>}
+                            </div>
+                        </div>
+                        {(h.price || h.priceAllInclusive) && (
+                            <div className={s.modalPrice}>
+                                {h.price && <><span className={s.price}>{h.price}</span><span className={s.perNight}>/night</span></>}
+                                {h.priceAllInclusive && <div className={s.priceAI}>All‑incl: {h.priceAllInclusive}</div>}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Info grid */}
+                    <div className={s.modalGrid}>
+                        {/* Location */}
+                        {(h.district || h.distanceToCenter || h.address) && (
+                            <div className={s.modalSection}>
+                                <p className={s.modalSectionTitle}>📍 Location</p>
+                                {h.district && <p className={s.modalSectionText}>{h.district}</p>}
+                                {h.distanceToCenter && <p className={s.modalSectionText}>{h.distanceToCenter} from city center</p>}
+                                {h.address && <p className={s.modalSectionText}>{h.address}</p>}
+                            </div>
+                        )}
+
+                        {/* Reviews */}
+                        {h.reviewScoreNumber > 0 && (
+                            <div className={s.modalSection}>
+                                <p className={s.modalSectionTitle}>💬 Guest Reviews</p>
+                                <p className={s.modalSectionText}><strong>{h.reviewScoreNumber.toFixed(1)}/10</strong> — {h.reviewScoreWord}</p>
+                                {h.reviewNumber > 0 && <p className={s.modalSectionText}>{h.reviewNumber.toLocaleString()} verified reviews</p>}
+                            </div>
+                        )}
+
+                        {/* Amenities */}
+                        {h.additionals && (
+                            <div className={s.modalSection}>
+                                <p className={s.modalSectionTitle}>✨ Amenities & Features</p>
+                                <p className={s.modalSectionText}>{h.additionals}</p>
+                            </div>
+                        )}
+
+                        {/* Pricing */}
+                        {(h.price || h.priceAllInclusive) && (
+                            <div className={s.modalSection}>
+                                <p className={s.modalSectionTitle}>💰 Pricing</p>
+                                {h.price && <p className={s.modalSectionText}>Standard: <strong>{h.price}</strong>/night</p>}
+                                {h.priceAllInclusive && <p className={s.modalSectionText}>All-inclusive: <strong>{h.priceAllInclusive}</strong>/night</p>}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Book button */}
+                    {h.hotelUrl && (
+                        <a href={h.hotelUrl} target="_blank" rel="noreferrer" className={s.modalBookBtn}>
+                            View & Book on Booking.com →
+                        </a>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+/* ── Real hotel card with photo from API ── */
+function RealHotelCard({ hotel }) {
+    const [showModal, setShowModal] = useState(false);
+    const h = hotel?.content ?? hotel;
+    // Use highest quality photo available
+    // Upgrade Booking.com image to highest resolution
+    const upgradePhoto = (url) => {
+        if (!url) return null;
+        // Replace any size suffix with max resolution
+        return url
+            .replace(/square\d+/, 'max1280x900')
+            .replace(/max\d+x\d+/, 'max1280x900')
+            .replace(/\/\/[a-z]+\.bstatic\.com/, '//cf.bstatic.com');
+    };
+    const photo = upgradePhoto(h.maxPhotoUrl) || upgradePhoto(h.photoUrl1440) || upgradePhoto(h.mainPhotoUrl);
+    // Star icons
+    const stars = h.hotelStars > 0 ? '★'.repeat(Math.min(h.hotelStars, 5)) : null;
+    // Score color
+    const scoreColor = h.reviewScoreNumber >= 9 ? '#1B5E20' : h.reviewScoreNumber >= 8 ? '#2E7D32' : h.reviewScoreNumber >= 7 ? '#1565C0' : '#555';
+
+    return (
+        <>
+            <div className={s.hotelCard} onClick={() => setShowModal(true)} style={{ cursor: 'pointer' }}>
+                {/* High quality photo */}
+                {photo && (
+                    <div className={s.hotelPhoto}>
+                        <img src={photo} alt={h.hotelName}
+                            onError={e => e.target.parentElement.style.display = 'none'} />
+                        {h.reviewScoreNumber > 0 && (
+                            <div className={s.photoScore} style={{ background: scoreColor }}>
+                                <span className={s.scoreNum}>{h.reviewScoreNumber.toFixed(1)}</span>
+                                <span className={s.scoreWord}>
+                                    {h.reviewScoreNumber >= 9 ? 'Exceptional' : h.reviewScoreNumber >= 8 ? 'Excellent' : h.reviewScoreNumber >= 7 ? 'Good' : 'Fair'}
+                                </span>
+                            </div>
+                        )}
+                        {h.isBeachFront && <div className={s.beachBadge}>🏖 Beachfront</div>}
+                    </div>
+                )}
+
+                <div className={s.hotelCardBody}>
+                    {/* Name + stars */}
+                    <div className={s.hotelCardTop}>
+                        <div>
+                            <p className={s.hotelName}>{h.hotelName}</p>
+                            <div className={s.hotelMeta2}>
+                                {h.accomodationType && <span className={s.accomType}>{h.accomodationType}</span>}
+                                {stars && <span className={s.starStr}>{stars}</span>}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Location */}
+                    {(h.district || h.distanceToCenter || h.address) && (
+                        <div className={s.infoRow}>
+                            <span className={s.infoIcon}>📍</span>
+                            <span className={s.infoText}>
+                                {[h.district, h.distanceToCenter, h.address].filter(Boolean).join(' · ')}
+                            </span>
+                        </div>
+                    )}
+
+                    {/* Reviews */}
+                    {h.reviewNumber > 0 && (
+                        <div className={s.infoRow}>
+                            <span className={s.infoIcon}>💬</span>
+                            <span className={s.infoText}>
+                                {h.reviewNumber.toLocaleString()} reviews · {h.reviewScoreWord}
+                            </span>
+                        </div>
+                    )}
+
+                    {/* Features / amenities */}
+                    {h.additionals && (
+                        <div className={s.infoRow}>
+                            <span className={s.infoIcon}>✨</span>
+                            <span className={s.infoText}>{h.additionals}</span>
+                        </div>
+                    )}
+
+                    {/* Price */}
+                    {(h.price || h.priceAllInclusive) && (
+                        <div className={s.priceBlock}>
+                            {h.price && (
+                                <div className={s.priceMain}>
+                                    <span className={s.hotelPrice}>{h.price}</span>
+                                    <span className={s.perNight}>/night</span>
+                                </div>
+                            )}
+                            {h.priceAllInclusive && (
+                                <div className={s.priceAIRow}>All‑incl: <strong>{h.priceAllInclusive}</strong>/night</div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Book button */}
+                    {h.hotelUrl && (
+                        <a href={h.hotelUrl} target="_blank" rel="noreferrer" className={s.bookBtnFull}
+                            onClick={e => e.stopPropagation()}>
+                            View & Book on Booking.com →
+                        </a>
+                    )}
+                </div>
+            </div>
+            {showModal && <HotelModal hotel={hotel} onClose={() => setShowModal(false)} />}
+        </>
+    );
+}
+
+function AIMessage({ text, hotels, onSaveAll, saved }) {
+    const parsedHotels = parseHotels(text);
+    const hasParsedHotels = parsedHotels && parsedHotels.length >= 2;
+
+    // Match only the hotels the AI actually recommended
+    const getMatchedHotels = () => {
+        if (!hotels || hotels.length === 0) return [];
+        const mentionedNames = [];
+        const namePattern = /[0-9]+\.\s+\*\*([^*(\n]+)/g;
+        let m;
+        while ((m = namePattern.exec(text)) !== null) {
+            mentionedNames.push(m[1].trim().toLowerCase());
+        }
+        if (mentionedNames.length === 0) return hotels.slice(0, 5);
+        const matched = mentionedNames
+            .map(name => hotels.find(h => {
+                const hn = (h?.content?.hotelName ?? h?.hotelName ?? '').toLowerCase();
+                return hn.includes(name.slice(0, 8)) || name.includes(hn.slice(0, 8));
+            }))
+            .filter(Boolean);
+        return matched.length >= 2 ? matched.slice(0, 5) : hotels.slice(0, 5);
+    };
+
+    const matchedHotels = getMatchedHotels();
+    const hasRealHotels = matchedHotels.length > 0;
+
+    // Extract only the intro text before the numbered list
+    const getCleanText = (t) => {
+        // Find where numbered list starts
+        const lines = t.split('\n');
+        const introLines = [];
+        for (const line of lines) {
+            if (/^\d+\.\s/.test(line)) break; // stop at first numbered item
+            introLines.push(line);
+        }
+        return introLines.join('\n')
+            .replace(/Based on the provided HOTEL_LIST[^.\n]*/gi, '')
+            .replace(/Please note that[^.\n]*/gi, '')
+            .replace(/These recommendations are based[^.\n]*/gi, '')
+            .replace(/\*\*Top \d+ Hotel Recommendations:\*\*/gi, '')
+            .replace(/\*\*Comparison of[^\n]*/gi, '')
+            .replace(/\n{2,}/g, '\n')
+            .trim();
+    };
+    const cleanText = getCleanText(text);
+
+    if (hasRealHotels) {
         return (
             <div>
+                {/* AI analysis text as paragraph */}
+                {cleanText && <div className={s.aiText}>{cleanText}</div>}
+                {/* Real hotel cards with best quality photos */}
                 <div className={s.hotelGrid}>
-                    {hotels.map((h, i) => (
-                        <HotelCard key={i} hotel={h} />
-                    ))}
+                    {matchedHotels.map((h, i) => <RealHotelCard key={i} hotel={h} />)}
+                </div>
+                <button className={saved ? s.btnSavedAll : s.btnSaveAll} onClick={onSaveAll} disabled={saved}>
+                    {saved ? '✓ Analysis saved' : '💾 Save this analysis'}
+                </button>
+            </div>
+        );
+    }
+    if (hasParsedHotels) {
+        return (
+            <div>
+                {cleanText && <div className={s.aiText}>{cleanText}</div>}
+                <div className={s.hotelGrid}>
+                    {parsedHotels.map((h, i) => <HotelCard key={i} hotel={h} />)}
                 </div>
                 <button className={saved ? s.btnSavedAll : s.btnSaveAll} onClick={onSaveAll} disabled={saved}>
                     {saved ? '✓ Analysis saved' : '💾 Save this analysis'}
@@ -146,6 +421,7 @@ export default function Chat() {
     const [saveMsg, setSaveMsg] = useState('');
     const [error, setError] = useState('');
     const [savedMessages, setSavedMessages] = useState([]);
+    const [loadedHotels, setLoadedHotels] = useState([]); // hotels from POST /hotels
     const bottomRef = useRef(null);
 
     // Step 1: destination
@@ -161,9 +437,9 @@ export default function Chat() {
 
     useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
-    const addMsg = (role, text) =>
+    const addMsg = (role, text, hotels = []) =>
         setMessages(prev => [...prev, {
-            role, text,
+            role, text, hotels,
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }]);
 
@@ -185,7 +461,8 @@ export default function Chat() {
         if (new Date(checkoutDate) <= new Date(checkinDate)) { setError('Check-out must be after check-in.'); return; }
         setError(''); setLoadingHotels(true);
         try {
-            await loadHotels({
+            let loadResult = [];
+            loadResult = await loadHotels({
                 destinationId: locationObj.destinationId || locationObj.dest_id,
                 destinationType: locationObj.destinationType || locationObj.dest_type || 'city',
                 checkInDate: checkinDate,
@@ -198,6 +475,20 @@ export default function Chat() {
                 hobbiesAndInterests: hobbies,
             });
             setHotelsLoaded(true);
+            // Store real hotels — handle array or HATEOAS wrapper
+            console.log('Hotels response:', loadResult);
+            let hotelsList = [];
+            if (Array.isArray(loadResult)) {
+                hotelsList = loadResult;
+            } else if (loadResult?._embedded) {
+                hotelsList = Object.values(loadResult._embedded).flat();
+            } else if (loadResult?.hotels) {
+                hotelsList = loadResult.hotels;
+            }
+            console.log('Parsed hotels count:', hotelsList.length);
+            if (hotelsList.length > 0) {
+                setLoadedHotels(hotelsList);
+            }
             addMsg('ai', `Hotels loaded for **${locationText}** (${checkinDate} → ${checkoutDate}). Ask me for recommendations!`);
         } catch (err) {
             setError('Failed to load hotels: ' + err.message);
@@ -212,7 +503,9 @@ export default function Chat() {
         setLoading(true);
         try {
             const res = await analyze({ userPrompt: prompt, userHobbies: hobbies });
-            addMsg('ai', res.analysis || JSON.stringify(res));
+            // Use hotels from response; fall back to stored loadedHotels
+            const resHotels = res.hotels && res.hotels.length > 0 ? res.hotels : null;
+            addMsg('ai', res.analysis || JSON.stringify(res), resHotels || loadedHotels);
         } catch (err) {
             addMsg('ai', `⚠ ${err.message}`);
         } finally { setLoading(false); }
@@ -232,7 +525,7 @@ export default function Chat() {
     };
 
     const handleClear = async () => {
-        setMessages([]); setSavedMessages([]); setHotelsLoaded(false);
+        setMessages([]); setSavedMessages([]); setHotelsLoaded(false); setLoadedHotels([]);
         setLocConfirmed(false); setLocationObj(null); setLocationText('');
         setCheckinDate(''); setCheckoutDate('');
         try { await clearAnalysis(); await clearHotels(); } catch { }
@@ -380,6 +673,7 @@ export default function Chat() {
                                     <div style={{ flex: 1 }}>
                                         <AIMessage
                                             text={m.text}
+                                            hotels={m.hotels || []}
                                             onSaveAll={() => handleSaveAll(i)}
                                             saved={savedMessages.includes(i)}
                                         />

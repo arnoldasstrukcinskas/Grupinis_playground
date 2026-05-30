@@ -23,6 +23,7 @@ public class OllamaService {
         5. Never invent hotel names, locations, restaurants, amenities, ratings, prices, or reviews.
         6. Use only the data explicitly provided for each hotel.
         7. If information is missing, write "Information not provided".
+        8. Write only a brief 1-2 sentence intro, then the hotel list. Nothing after the list.
         
         OUTPUT FORMAT (MANDATORY):
         For each hotel use EXACTLY this format:

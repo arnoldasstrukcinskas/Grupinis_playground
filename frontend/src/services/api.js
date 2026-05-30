@@ -35,11 +35,8 @@ export async function login({ username, password }) {
 }
 
 export async function logout() {
-    const token = getToken();
-    if (!token) return;
-    await fetch(`${BASE}/auth/logout?token=${encodeURIComponent(token)}`, {
-        method: 'POST', headers: authHeaders(),
-    });
+    // Just clear the token locally — don't call backend blacklist
+    // Backend blacklist resets on restart anyway and causes 403 issues
     clearToken();
 }
 
@@ -116,9 +113,14 @@ export async function clearHotels() {
     return handleResponse(res);
 }
 
-export async function saveHotel(hotelId) {
-    const res = await fetch(`${BASE}/analysis/saveHotel/${hotelId}`, {
-        method: 'POST', headers: authHeaders(),
-    });
+// GET /analysis/{id}/hotels — returns real HotelDto list for an analysis
+export async function getAnalysisHotels(id) {
+    const res = await fetch(`${BASE}/analysis/${id}/hotels`, { headers: authHeaders() });
+    return handleResponse(res);
+}
+
+// GET /analysis/{analysisId}/hotels/{hotelId}
+export async function getAnalysisHotel(analysisId, hotelId) {
+    const res = await fetch(`${BASE}/analysis/${analysisId}/hotels/${hotelId}`, { headers: authHeaders() });
     return handleResponse(res);
 }
