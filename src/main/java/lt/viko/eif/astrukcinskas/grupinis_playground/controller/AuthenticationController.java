@@ -1,14 +1,18 @@
 package lt.viko.eif.astrukcinskas.grupinis_playground.controller;
 
-import lt.viko.eif.astrukcinskas.grupinis_playground.service.authentication.AuthenticationService;
-import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.AuthDTO.LoginDto;
-import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.AuthDTO.RegisterDto;
+import javax.security.sasl.AuthenticationException;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.security.sasl.AuthenticationException;
+import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.AuthDTO.LoginDto;
+import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.AuthDTO.RegisterDto;
+import lt.viko.eif.astrukcinskas.grupinis_playground.service.authentication.AuthenticationService;
 
 @RestController
 @RequestMapping("/auth")

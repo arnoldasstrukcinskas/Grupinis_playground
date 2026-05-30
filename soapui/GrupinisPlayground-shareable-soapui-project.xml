@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="0bce0e32-9b8e-4b8b-9d79-42f845b48a5f" activeEnvironment="Default" name="Grupinis Playground Shareable" resourceRoot="" soapui-version="5.9.1" xmlns:con="http://eviware.com/soapui/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <con:settings/>
+  <con:interface xsi:type="con:RestService" id="64fd110e-ff2f-4688-bb69-43f8f2785d34" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://localhost:8085" type="rest">
+    <con:settings/>
+    <con:definitionCache/>
+    <con:endpoints>
+      <con:endpoint>http://localhost:8085</con:endpoint>
+    </con:endpoints>
+    <con:resource name="Api-docs" path="/api-docs" id="1cdb4f83-cd9b-4477-8ded-9e4e89f9e9f5">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="Get Api-docs" id="09a8f41d-cd6c-4190-a2b8-5c3e77f3f5f7" method="GET">
+        <con:settings/>
+        <con:parameters/>
+        <con:request name="Get Api-docs" id="3bba4808-779c-4ccf-89d6-14f0df5b9076" mediaType="application/json">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://localhost:8085</con:endpoint>
+          <con:request/>
+          <con:originalUri>http://localhost:8085/api-docs</con:originalUri>
+          <con:credentials>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+    <con:resource name="auth" path="/auth" id="4dd12de4-a6ae-4bc0-b6d5-a352f1f473fb">
+      <con:settings/>
+      <con:parameters/>
+      <con:resource name="register" path="register" id="3750d23d-bb48-4902-a7af-6667a2d2f6b5">
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="POST register" id="8a1e28de-d5a6-4fa1-9038-14d7a5d83882" method="POST">
+          <con:settings/>
+          <con:parameters/>
+          <con:request name="POST register" id="a6ce7ca8-5517-4db4-b9b0-0f387fbe2cba" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8085</con:endpoint>
+            <con:request>{
+  "username": "soapui-demo-user",
+  "password": "Test1234!",
+  "email": "soapui-demo-user@example.com"
+}</con:request>
+            <con:originalUri>http://localhost:8085/auth/register</con:originalUri>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:request>
+        </con:method>
+      </con:resource>
+      <con:resource name="login" path="login" id="c667a7e5-2ae6-4474-b8f1-4fc3fcaf24ab">
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="POST login" id="14f47046-c52e-4c3b-a12d-d6c88b6f7ff9" method="POST">
+          <con:settings/>
+          <con:parameters/>
+          <con:request name="POST login" id="b0d3826d-a7f7-40f9-890d-749fdf0c1584" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8085</con:endpoint>
+            <con:request>{
+  "username": "soapui-demo-user",
+  "password": "Test1234!"
+}</con:request>
+            <con:originalUri>http://localhost:8085/auth/login</con:originalUri>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:request>
+        </con:method>
+      </con:resource>
+      <con:resource name="logout" path="logout" id="017f364d-57d1-4a29-8606-fb4d75fb8394">
+        <con:settings/>
+        <con:parameters>
+          <con:parameter>
+            <con:name>token</con:name>
+            <con:value>PASTE_JWT_HERE</con:value>
+            <con:style>QUERY</con:style>
+            <con:default/>
+            <con:description xsi:nil="true"/>
+          </con:parameter>
+        </con:parameters>
+        <con:method name="POST logout" id="70bb4a4b-4970-4512-b61b-1f1c48fda4e7" method="POST">
+          <con:settings/>
+          <con:parameters/>
+          <con:request name="POST logout" id="ae52fdbd-48d2-4f1c-a14d-d6c6ee11c8d6" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8085</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://localhost:8085/auth/logout</con:originalUri>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="token" value="PASTE_JWT_HERE" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+            <con:parameterOrder>
+              <con:entry>token</con:entry>
+            </con:parameterOrder>
+          </con:request>
+        </con:method>
+      </con:resource>
+    </con:resource>
+    <con:resource name="hotels" path="/hotels" id="29dd7307-4481-426b-bef5-0ec51d95bd05">
+      <con:settings/>
+      <con:parameters>
+        <con:parameter>
+          <con:name>location</con:name>
+          <con:value>Barcelona</con:value>
+          <con:style>QUERY</con:style>
+          <con:default/>
+          <con:description xsi:nil="true"/>
+        </con:parameter>
+      </con:parameters>
+      <con:method name="GET locations" id="7bcb3ee6-c1e7-4fd6-b43d-3d46ad7d417d" method="GET">
+        <con:settings/>
+        <con:parameters/>
+        <con:request name="GET locations" id="1d166aac-4628-4540-8777-503bd229a137" mediaType="application/json">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer PASTE_JWT_HERE" xmlns="http://eviware.com/soapui/config"/></con:setting>
+          </con:settings>
+          <con:endpoint>http://localhost:8085</con:endpoint>
+          <con:request/>
+          <con:originalUri>http://localhost:8085/hotels</con:originalUri>
+          <con:credentials>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters>
+            <entry key="location" value="Barcelona" xmlns="http://eviware.com/soapui/config"/>
+          </con:parameters>
+          <con:parameterOrder>
+            <con:entry>location</con:entry>
+          </con:parameterOrder>
+        </con:request>
+      </con:method>
+      <con:method name="POST hotels" id="506567d0-a310-4799-ab95-2e3cb94f8f10" method="POST">
+        <con:settings/>
+        <con:parameters/>
+        <con:request name="POST hotels" id="43f8ed3c-cc1e-4510-9199-e152a13dc350" mediaType="application/json" postQueryString="false">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer PASTE_JWT_HERE" xmlns="http://eviware.com/soapui/config"/></con:setting>
+          </con:settings>
+          <con:endpoint>http://localhost:8085</con:endpoint>
+          <con:request>{
+  "hobbiesAndInterests": "architecture, museums, local food, walking",
+  "promptToOllama": "Recommend hotels for a curious traveler who likes history and walkable neighborhoods.",
+  "destinationId": -372490,
+  "checkInDate": "2026-06-15",
+  "checkOutDate": "2026-06-18",
+  "roomNumber": 1,
+  "adultsNumber": 2
+}</con:request>
+          <con:originalUri>http://localhost:8085/hotels</con:originalUri>
+          <con:credentials>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+    <con:resource name="analysis" path="/analysis" id="878e2f6e-e7a6-48e5-8d8d-e4505b6cb1ee">
+      <con:settings/>
+      <con:parameters/>
+      <con:resource name="analyze" path="analyze" id="5999f40d-db57-4f44-9baf-ecf298d74813">
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="POST analyze" id="cb6f5321-c751-4725-9bdf-69dd7b18499e" method="POST">
+          <con:settings/>
+          <con:parameters/>
+          <con:request name="POST analyze" id="36131374-30fa-4627-b541-65d2fc75ad4d" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer PASTE_JWT_HERE" xmlns="http://eviware.com/soapui/config"/></con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8085</con:endpoint>
+            <con:request>{
+  "userPrompt": "Plan a comfortable city break with good food and museums.",
+  "userHobbies": "museums, architecture, cafes"
+}</con:request>
+            <con:originalUri>http://localhost:8085/analysis/analyze</con:originalUri>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:request>
+        </con:method>
+      </con:resource>
+      <con:resource name="analyses" path="analyses" id="27f4c0f8-f7a1-4a27-adb3-ac9496d773d3">
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="GET analyses" id="e8caea7f-9563-4c32-b26a-9983573a4ca3" method="GET">
+          <con:settings/>
+          <con:parameters/>
+          <con:request name="GET analyses" id="8b0da5d8-a080-4536-aeff-89f58630f719" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer PASTE_JWT_HERE" xmlns="http://eviware.com/soapui/config"/></con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8085</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://localhost:8085/analysis/analyses</con:originalUri>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:request>
+        </con:method>
+      </con:resource>
+      <con:resource name="save" path="" id="3c53ec97-c0fd-467a-bcb6-6536f8306341">
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="POST save analysis" id="edb469ef-6589-4281-bae8-24de2ac783b8" method="POST">
+          <con:settings/>
+          <con:parameters/>
+          <con:request name="POST save analysis" id="50902ae9-c62e-47d0-982e-af03f9b41ae7" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer PASTE_JWT_HERE" xmlns="http://eviware.com/soapui/config"/></con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8085</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://localhost:8085/analysis</con:originalUri>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:request>
+        </con:method>
+      </con:resource>
+      <con:resource name="by-id" path="PASTE_ANALYSIS_ID_HERE" id="7be7af86-5a2e-47a0-b153-9bb2551a6e93">
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="GET analysis by id" id="a759a60e-b414-4a5a-9fe4-24e596b9a17f" method="GET">
+          <con:settings/>
+          <con:parameters/>
+          <con:request name="GET analysis by id" id="cff96262-0da9-42ff-bb70-2fe21220f34d" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer PASTE_JWT_HERE" xmlns="http://eviware.com/soapui/config"/></con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8085</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://localhost:8085/analysis/PASTE_ANALYSIS_ID_HERE</con:originalUri>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:request>
+        </con:method>
+        <con:resource name="hotels" path="hotels" id="8485fea3-f5bb-4fbf-9f92-ad3e3fc8d5bb">
+          <con:settings/>
+          <con:parameters/>
+          <con:method name="GET analysis hotels" id="9f0e6015-a01d-49bf-af64-4cbf9f78cc14" method="GET">
+            <con:settings/>
+            <con:parameters/>
+            <con:request name="GET analysis hotels" id="406f13ec-8685-4f9b-a04d-75467d41055c" mediaType="application/json">
+              <con:settings>
+                <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer PASTE_JWT_HERE" xmlns="http://eviware.com/soapui/config"/></con:setting>
+              </con:settings>
+              <con:endpoint>http://localhost:8085</con:endpoint>
+              <con:request/>
+              <con:originalUri>http://localhost:8085/analysis/PASTE_ANALYSIS_ID_HERE/hotels</con:originalUri>
+              <con:credentials>
+                <con:authType>No Authorization</con:authType>
+              </con:credentials>
+              <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+              <con:jmsPropertyConfig/>
+              <con:parameters/>
+            </con:request>
+          </con:method>
+          <con:resource name="hotel-by-id" path="PASTE_HOTEL_ID_HERE" id="b2b53f8d-45d8-4fbb-b4c3-a53ce258dbfe">
+            <con:settings/>
+            <con:parameters/>
+            <con:method name="GET one hotel" id="ebaf753c-e72d-4bcb-98d4-86595b6e6376" method="GET">
+              <con:settings/>
+              <con:parameters/>
+              <con:request name="GET one hotel" id="82fb98f9-6f74-447f-b8af-692fe3b4fe0c" mediaType="application/json">
+                <con:settings>
+                  <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer PASTE_JWT_HERE" xmlns="http://eviware.com/soapui/config"/></con:setting>
+                </con:settings>
+                <con:endpoint>http://localhost:8085</con:endpoint>
+                <con:request/>
+                <con:originalUri>http://localhost:8085/analysis/PASTE_ANALYSIS_ID_HERE/hotels/PASTE_HOTEL_ID_HERE</con:originalUri>
+                <con:credentials>
+                  <con:authType>No Authorization</con:authType>
+                </con:credentials>
+                <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                <con:jmsPropertyConfig/>
+                <con:parameters/>
+              </con:request>
+            </con:method>
+          </con:resource>
+        </con:resource>
+        <con:method name="DELETE analysis by id" id="cff38aae-c161-4291-9e76-fec6fd9d531d" method="DELETE">
+          <con:settings/>
+          <con:parameters/>
+          <con:request name="DELETE analysis by id" id="33d79fb8-b5b6-4c17-90d8-7b3477a7fb53" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer PASTE_JWT_HERE" xmlns="http://eviware.com/soapui/config"/></con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8085</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://localhost:8085/analysis/PASTE_ANALYSIS_ID_HERE</con:originalUri>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:request>
+        </con:method>
+      </con:resource>
+      <con:resource name="clearAnalysis" path="clearAnalysis" id="e232537e-696a-4a07-81a8-68f4c447235f">
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="DELETE clearAnalysis" id="4e88d56c-f95c-4c85-b66d-df2e5e7c818b" method="DELETE">
+          <con:settings/>
+          <con:parameters/>
+          <con:request name="DELETE clearAnalysis" id="82f5bfc8-d0f1-48dd-9ff5-b674fd76699d" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer PASTE_JWT_HERE" xmlns="http://eviware.com/soapui/config"/></con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8085</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://localhost:8085/analysis/clearAnalysis</con:originalUri>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:request>
+        </con:method>
+      </con:resource>
+      <con:resource name="clearHotels" path="clearHotels" id="981fb46a-3513-4325-ad57-a99781c8f89c">
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="DELETE clearHotels" id="678dc21d-e1e7-43a4-995e-8a603353da33" method="DELETE">
+          <con:settings/>
+          <con:parameters/>
+          <con:request name="DELETE clearHotels" id="ec7d7f20-57a0-4fc4-89a3-875d282d50ec" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer PASTE_JWT_HERE" xmlns="http://eviware.com/soapui/config"/></con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8085</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://localhost:8085/analysis/clearHotels</con:originalUri>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:request>
+        </con:method>
+      </con:resource>
+    </con:resource>
+  </con:interface>
+  <con:properties/>
+  <con:wssContainer/>
+  <con:oAuth2ProfileContainer/>
+  <con:oAuth1ProfileContainer/>
+  <con:sensitiveInformation/>
+</con:soapui-project>

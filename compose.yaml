@@ -9,7 +9,8 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
-      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_AI_OLLAMA_BASE_URL=http://host.docker.internal:11434
 
   trip_advisor.client:
     image: node:20-alpine
