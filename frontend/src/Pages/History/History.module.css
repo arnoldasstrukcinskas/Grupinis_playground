@@ -1,0 +1,268 @@
+/* History.module.css */
+.page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: var(--sky-l);
+}
+
+.header {
+    background: white;
+    border-bottom: 1px solid var(--sky);
+    padding: 0.9rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.backBtn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    color: var(--blue-m);
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: var(--font);
+    padding: 0;
+}
+
+    .backBtn:hover {
+        color: var(--navy);
+    }
+
+.title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--navy);
+}
+
+.count {
+    font-size: 0.75rem;
+    color: var(--muted);
+    background: var(--sky-l);
+    border: 1px solid var(--sky);
+    border-radius: 20px;
+    padding: 2px 12px;
+}
+
+.errorBanner {
+    background: #FFEBEE;
+    border: 1px solid #EF9A9A;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.8rem;
+    color: #C62828;
+}
+
+.body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* LIST */
+.list {
+    width: 280px;
+    min-width: 280px;
+    background: white;
+    border-right: 1px solid var(--sky);
+    overflow-y: auto;
+    padding: 0.8rem;
+}
+
+    .list::-webkit-scrollbar {
+        width: 3px;
+    }
+
+    .list::-webkit-scrollbar-thumb {
+        background: var(--sky);
+        border-radius: 3px;
+    }
+
+.dimText {
+    font-size: 0.82rem;
+    color: var(--muted);
+    padding: 1rem;
+    text-align: center;
+}
+
+.empty {
+    padding: 2rem 1rem;
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.item {
+    padding: 0.85rem 0.9rem;
+    border-radius: 8px;
+    border: 1px solid var(--sky);
+    margin-bottom: 6px;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+    .item:hover {
+        background: var(--sky-l);
+        border-color: var(--blue-l);
+    }
+
+    .item.active {
+        background: var(--sky-l);
+        border-color: var(--blue-m);
+    }
+
+.itemId {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--blue-m);
+    margin-bottom: 4px;
+    letter-spacing: 0.05em;
+}
+
+.itemPreview {
+    font-size: 0.78rem;
+    color: var(--navy);
+    line-height: 1.4;
+    padding-right: 24px;
+}
+
+.deleteBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    padding: 3px;
+    border-radius: 4px;
+    display: flex;
+    transition: background 0.15s, color 0.15s;
+}
+
+    .deleteBtn:hover {
+        background: var(--red);
+        color: white;
+    }
+
+/* DETAIL */
+.detail {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
+
+    .detail::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .detail::-webkit-scrollbar-thumb {
+        background: var(--sky);
+        border-radius: 4px;
+    }
+
+.detailEmpty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-align: center;
+}
+
+.detailContent {
+    max-width: 700px;
+}
+
+.detailHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+}
+
+.detailTitle {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--navy);
+}
+
+.btnRed {
+    padding: 0.45rem 1rem;
+    background: var(--red);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: var(--font);
+}
+
+    .btnRed:hover {
+        background: var(--red-h);
+    }
+
+.sectionLabel {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+}
+
+.analysisBox {
+    background: white;
+    border: 1px solid var(--sky);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1.2rem;
+}
+
+.analysisText {
+    font-size: 0.88rem;
+    line-height: 1.75;
+    color: var(--navy);
+    white-space: pre-wrap;
+}
+
+.hotelsBox {
+    background: white;
+    border: 1px solid var(--sky);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+}
+
+.hotelLink {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--blue-m);
+    padding: 0.3rem 0;
+    border-bottom: 1px solid var(--sky-l);
+    transition: color 0.15s;
+}
+
+    .hotelLink:hover {
+        color: var(--navy);
+    }
+
+    .hotelLink:last-child {
+        border-bottom: none;
+    }

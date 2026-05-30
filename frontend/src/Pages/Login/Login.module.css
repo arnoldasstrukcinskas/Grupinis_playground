@@ -1,215 +1,81 @@
 /* Login.module.css */
-
 .page {
-    display: flex;
     min-height: 100vh;
-}
-
-/* ── LEFT PANEL ── */
-.left {
-    flex: 1;
-    background: var(--navy);
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 3rem 3.5rem;
-    position: relative;
-    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: var(--sky-l);
 }
 
-.circle1, .circle2 {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-}
-
-.circle1 {
-    width: 500px;
-    height: 500px;
-    border: 1px solid rgba(255,255,255,0.06);
-    bottom: -160px;
-    right: -100px;
-}
-
-.circle2 {
-    width: 320px;
-    height: 320px;
-    border: 1px solid rgba(255,255,255,0.08);
-    bottom: -40px;
-    right: 60px;
+.card {
+    background: var(--white);
+    border: 1px solid var(--sky);
+    border-radius: 12px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 24px rgba(13,43,85,0.10);
 }
 
 .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 0;
-    position: relative;
-    z-index: 1;
+    gap: 8px;
+    margin-bottom: 1.6rem;
 }
 
 .logoIcon {
-    width: 34px;
-    height: 34px;
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.22);
-    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    background: var(--navy);
+    border-radius: 7px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
-    .logoIcon svg {
-        width: 18px;
-        height: 18px;
-        fill: var(--white);
-    }
 
 .logoText {
-    font-family: var(--font-serif);
-    font-size: 1.2rem;
-    font-weight: 400;
-    color: var(--white);
-    letter-spacing: 0.04em;
-}
-
-.hero {
-    max-width: 340px;
-    position: relative;
-    z-index: 1;
-}
-
-.heroLabel {
-    font-size: 0.68rem;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--blue-l);
-    margin-bottom: 1.1rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-    .heroLabel::before {
-        content: '';
-        display: block;
-        width: 20px;
-        height: 1px;
-        background: var(--blue-l);
-    }
-
-.heroTitle {
-    font-family: var(--font-serif);
-    font-size: 2.6rem;
-    font-weight: 400;
-    line-height: 1.15;
-    color: var(--white);
-    margin-bottom: 1.1rem;
-}
-
-    .heroTitle em {
-        font-style: italic;
-        color: var(--sky);
-    }
-
-.heroBody {
-    font-size: 0.83rem;
-    font-weight: 300;
-    line-height: 1.75;
-    color: rgba(255,255,255,0.55);
-    margin-bottom: 2.2rem;
-}
-
-.features {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.feat {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-}
-
-.featDot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--blue-l);
-    margin-top: 6px;
-    flex-shrink: 0;
-}
-
-.featText {
-    font-size: 0.78rem;
-    font-weight: 300;
-    color: rgba(255,255,255,0.5);
-    line-height: 1.55;
-}
-
-    .featText strong {
-        font-weight: 500;
-        color: rgba(255,255,255,0.85);
-    }
-
-.leftFoot {
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.2);
-    letter-spacing: 0.08em;
-    position: relative;
-    z-index: 1;
-}
-
-/* ── RIGHT PANEL ── */
-.right {
-    width: 460px;
-    min-width: 380px;
-    background: var(--white);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 3.5rem;
-    border-left: 1px solid var(--sky);
-}
-
-.formEyebrow {
-    font-size: 0.68rem;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.5rem;
-}
-
-.formTitle {
-    font-family: var(--font-serif);
-    font-size: 1.9rem;
-    font-weight: 400;
+    font-size: 1rem;
+    font-weight: 600;
     color: var(--navy);
-    line-height: 1.2;
-    margin-bottom: 2rem;
 }
 
-    .formTitle em {
-        font-style: italic;
-        color: var(--blue-m);
-    }
+.title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.3rem;
+}
 
-/* ── FIELDS ── */
+.sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+}
+
+.errorBanner {
+    background: #FFEBEE;
+    border: 1px solid #EF9A9A;
+    border-radius: 6px;
+    padding: 0.7rem 1rem;
+    font-size: 0.8rem;
+    color: #C62828;
+    margin-bottom: 1rem;
+}
+
 .field {
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.1rem;
 }
 
     .field label {
         display: block;
-        font-size: 0.68rem;
+        font-size: 0.7rem;
         font-weight: 500;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
         color: var(--muted);
-        margin-bottom: 0.45rem;
+        margin-bottom: 0.4rem;
     }
 
     .field input {
@@ -219,11 +85,10 @@
         border-radius: 6px;
         color: var(--navy);
         font-size: 0.88rem;
-        font-weight: 400;
-        padding: 0.72rem 1rem;
+        padding: 0.7rem 1rem;
         outline: none;
         transition: border-color 0.2s, background 0.2s;
-        -webkit-appearance: none;
+        font-family: var(--font);
     }
 
         .field input:focus {
@@ -235,17 +100,6 @@
             color: #A0B8D8;
         }
 
-    .field.hasError input {
-        border-color: var(--red);
-    }
-
-.errorMsg {
-    font-size: 0.72rem;
-    color: var(--red);
-    margin-top: 0.35rem;
-}
-
-/* Password wrapper */
 .pwWrap {
     position: relative;
 }
@@ -254,9 +108,9 @@
         padding-right: 2.8rem;
     }
 
-.togglePw {
+.eyeBtn {
     position: absolute;
-    right: 0.85rem;
+    right: 0.8rem;
     top: 50%;
     transform: translateY(-50%);
     background: none;
@@ -265,109 +119,44 @@
     color: #A0B8D8;
     display: flex;
     align-items: center;
-    transition: color 0.2s;
     padding: 0;
 }
 
-    .togglePw:hover {
+    .eyeBtn:hover {
         color: var(--blue-m);
     }
 
-    .togglePw svg {
+    .eyeBtn svg {
         width: 16px;
         height: 16px;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 1.5;
-        stroke-linecap: round;
-        stroke-linejoin: round;
     }
 
-/* Row options */
-.rowOpts {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.8rem;
-    font-size: 0.75rem;
-}
-
-.remember {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    color: var(--muted);
-    user-select: none;
-}
-
-    .remember input[type="checkbox"] {
-        appearance: none;
-        width: 14px;
-        height: 14px;
-        border: 1px solid var(--border-h);
-        border-radius: 3px;
-        background: var(--white);
-        cursor: pointer;
-        position: relative;
-        flex-shrink: 0;
-        transition: background 0.15s, border-color 0.15s;
-    }
-
-        .remember input[type="checkbox"]:checked {
-            background: var(--blue-m);
-            border-color: var(--blue-m);
-        }
-
-            .remember input[type="checkbox"]:checked::after {
-                content: '';
-                position: absolute;
-                left: 3px;
-                top: 1px;
-                width: 5px;
-                height: 8px;
-                border: 1.5px solid white;
-                border-left: none;
-                border-top: none;
-                transform: rotate(40deg);
-            }
-
-.forgot {
-    color: var(--muted);
-    font-size: 0.75rem;
-    transition: color 0.2s;
-}
-
-    .forgot:hover {
-        color: var(--navy);
-    }
-
-/* Buttons */
-.btnSignIn {
+.btnGreen {
     width: 100%;
-    padding: 0.82rem;
+    padding: 0.8rem;
     background: var(--green);
     border: none;
     border-radius: 6px;
-    font-size: 0.78rem;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
     color: white;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: background 0.2s, transform 0.12s, opacity 0.2s;
+    transition: background 0.2s;
     margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--font);
 }
 
-    .btnSignIn:hover {
+    .btnGreen:hover {
         background: var(--green-h);
     }
 
-    .btnSignIn:active {
-        transform: scale(0.985);
-    }
-
-    .btnSignIn:disabled {
+    .btnGreen:disabled {
         opacity: 0.6;
         cursor: not-allowed;
     }
@@ -387,53 +176,44 @@
     }
 
     .divider span {
-        font-size: 0.68rem;
+        font-size: 0.7rem;
         color: var(--muted);
-        letter-spacing: 0.1em;
     }
 
-.btnGuest {
+.btnRed {
+    display: block;
     width: 100%;
     padding: 0.78rem;
     background: var(--red);
     border: none;
     border-radius: 6px;
-    font-size: 0.78rem;
+    color: white;
+    font-size: 0.82rem;
     font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: white;
     cursor: pointer;
-    transition: background 0.2s, transform 0.12s;
-    margin-bottom: 2rem;
+    transition: background 0.2s;
+    margin-bottom: 1.2rem;
+    text-align: center;
+    text-decoration: none;
+    font-family: var(--font);
 }
 
-    .btnGuest:hover {
+    .btnRed:hover {
         background: var(--red-h);
     }
 
-    .btnGuest:active {
-        transform: scale(0.985);
-    }
-
-.signupRow {
-    font-size: 0.75rem;
+.hint {
+    font-size: 0.72rem;
     color: var(--muted);
     text-align: center;
 }
 
-    .signupRow a {
-        color: var(--blue-m);
-        font-weight: 500;
-        border-bottom: 1px solid var(--sky);
-        transition: border-color 0.2s;
+    .hint strong {
+        color: var(--navy);
     }
 
-        .signupRow a:hover {
-            border-color: var(--blue-l);
-        }
-
-/* Loading spinner */
 .spinner {
     width: 14px;
     height: 14px;
@@ -441,26 +221,10 @@
     border-top-color: white;
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
-    display: inline-block;
-    margin-right: 6px;
-    vertical-align: middle;
 }
 
 @keyframes spin {
     to {
         transform: rotate(360deg);
-    }
-}
-
-/* ── RESPONSIVE ── */
-@media (max-width: 740px) {
-    .left {
-        display: none;
-    }
-
-    .right {
-        width: 100%;
-        min-width: unset;
-        padding: 2.5rem 1.8rem;
     }
 }
