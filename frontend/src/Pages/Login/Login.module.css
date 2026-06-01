@@ -1,0 +1,230 @@
+/* Login.module.css */
+.page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: var(--sky-l);
+}
+
+.card {
+    background: var(--white);
+    border: 1px solid var(--sky);
+    border-radius: 12px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 24px rgba(13,43,85,0.10);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1.6rem;
+}
+
+.logoIcon {
+    width: 32px;
+    height: 32px;
+    background: var(--navy);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logoText {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--navy);
+}
+
+.title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.3rem;
+}
+
+.sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+}
+
+.errorBanner {
+    background: #FFEBEE;
+    border: 1px solid #EF9A9A;
+    border-radius: 6px;
+    padding: 0.7rem 1rem;
+    font-size: 0.8rem;
+    color: #C62828;
+    margin-bottom: 1rem;
+}
+
+.field {
+    margin-bottom: 1.1rem;
+}
+
+    .field label {
+        display: block;
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 0.4rem;
+    }
+
+    .field input {
+        width: 100%;
+        background: var(--sky-l);
+        border: 1px solid var(--sky);
+        border-radius: 6px;
+        color: var(--navy);
+        font-size: 0.88rem;
+        padding: 0.7rem 1rem;
+        outline: none;
+        transition: border-color 0.2s, background 0.2s;
+        font-family: var(--font);
+    }
+
+        .field input:focus {
+            border-color: var(--blue-l);
+            background: var(--white);
+        }
+
+        .field input::placeholder {
+            color: #A0B8D8;
+        }
+
+.pwWrap {
+    position: relative;
+}
+
+    .pwWrap input {
+        padding-right: 2.8rem;
+    }
+
+.eyeBtn {
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #A0B8D8;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+    .eyeBtn:hover {
+        color: var(--blue-m);
+    }
+
+    .eyeBtn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+.btnGreen {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--green);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--font);
+}
+
+    .btnGreen:hover {
+        background: var(--green-h);
+    }
+
+    .btnGreen:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+    .divider::before, .divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--sky);
+    }
+
+    .divider span {
+        font-size: 0.7rem;
+        color: var(--muted);
+    }
+
+.btnRed {
+    display: block;
+    width: 100%;
+    padding: 0.78rem;
+    background: var(--red);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 1.2rem;
+    text-align: center;
+    text-decoration: none;
+    font-family: var(--font);
+}
+
+    .btnRed:hover {
+        background: var(--red-h);
+    }
+
+.hint {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-align: center;
+}
+
+    .hint strong {
+        color: var(--navy);
+    }
+
+.spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
