@@ -91,6 +91,25 @@ public class HotelsService {
         return hotel;
     }
 
+    public HotelDto converterHotelToDto(Hotel hotel) {
+        HotelDto hotelDto = new HotelDto();
+
+        hotelDto.setHotelName(hotel.getHotelName());
+        hotelDto.setAccomodationType(hotel.getAccomodationType());
+        hotelDto.setHotelStars(hotel.getHotelStars());
+        hotelDto.setDistrict(hotel.getDistrict());
+        hotelDto.setDistanceToCenter(hotel.getDistanceToCenter());
+        hotelDto.setBeachFront(hotel.isBeachFront());
+        hotelDto.setPrice(hotel.getPrice());
+        hotelDto.setPriceAllInclusive(hotel.getPriceAllInclusive());
+        hotelDto.setAddress(hotel.getAddress());
+        hotelDto.setMainPhotoUrl(hotel.getMainPhotoUrl());
+        hotelDto.setPhotoUrl1440(hotel.getPhotoUrl1440());
+        hotelDto.setHotelUrl(hotel.getHotelUrl());
+
+        return hotelDto;
+    }
+
     /**
      * Gets hotels from memmory
      * @return list of hotel data transfer object
