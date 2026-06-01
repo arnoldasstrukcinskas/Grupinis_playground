@@ -53,7 +53,7 @@ class AuthenticationServiceTest {
      * @throws Exception
      */
     @Test
-    void registerSavesUserWithEncodedPassword() {
+    void registerSavesUserWithEncodedPassword() throws Exception {
         RegisterDto registerDto = registerDto("alice", "plain-password", "alice@example.com");
         when(passwordEncoder.encode("plain-password")).thenReturn("encoded-password");
 

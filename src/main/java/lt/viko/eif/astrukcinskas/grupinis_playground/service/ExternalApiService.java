@@ -35,7 +35,7 @@ public class ExternalApiService {
      */
     public List<HotelDto> getHotels(HotelRequestDto requestDto) throws InvalidObjectException {
 
-        if (requestDto.getDestinationId() <= 0
+        if (requestDto.getDestinationId() == 0
                 || requestDto.getCheckInDate() == null || requestDto.getCheckInDate().isBlank()
                 || requestDto.getCheckOutDate() == null || requestDto.getCheckOutDate().isBlank()
                 || requestDto.getRoomNumber() <= 0

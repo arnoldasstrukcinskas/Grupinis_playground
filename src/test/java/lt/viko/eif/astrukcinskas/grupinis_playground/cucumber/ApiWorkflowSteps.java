@@ -70,9 +70,11 @@ public class ApiWorkflowSteps {
 
     /**
      * Sets up the test environment before each scenario.
+     *
+     * @throws Exception if mocked external services cannot be configured
      */
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         currentUsername = null;
         currentToken = null;
         savedAnalysisId = 0;

@@ -22,7 +22,6 @@ import lt.viko.eif.astrukcinskas.grupinis_playground.model.Analysis;
 import lt.viko.eif.astrukcinskas.grupinis_playground.model.AppUser;
 import lt.viko.eif.astrukcinskas.grupinis_playground.model.Hotel;
 import lt.viko.eif.astrukcinskas.grupinis_playground.repository.AnalysisRepository;
-import lt.viko.eif.astrukcinskas.grupinis_playground.repository.HotelsRepository;
 import lt.viko.eif.astrukcinskas.grupinis_playground.repository.UsersRepository;
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.AnalysisRequestDto;
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.HotelDto;
@@ -41,13 +40,11 @@ class AnalysisServiceTest {
     @BeforeEach
     void setUp() {
         analysisRepository = mock(AnalysisRepository.class);
-        HotelsRepository hotelsRepository = mock(HotelsRepository.class);
         hotelsService = mock(HotelsService.class);
         ollamaService = mock(OllamaService.class);
         usersRepository = mock(UsersRepository.class);
         analysisService = new AnalysisService(
                 analysisRepository,
-                hotelsRepository,
                 hotelsService,
                 ollamaService,
                 usersRepository);
@@ -59,7 +56,7 @@ class AnalysisServiceTest {
     }
 
     @Test
-    void generateAnalysisUsesOllamaResponseAndConvertedHotels() {
+    void generateAnalysisUsesOllamaResponseAndConvertedHotels() throws Exception {
         AnalysisRequestDto requestDto = analysisRequestDto("Plan a trip", "museums");
         HotelDto hotelDto = new HotelDto();
         Hotel hotel = new Hotel();
@@ -77,7 +74,7 @@ class AnalysisServiceTest {
     }
 
     @Test
-    void generateAnalysisHandlesMissingHotelsList() {
+    void generateAnalysisHandlesMissingHotelsList() throws Exception {
         AnalysisRequestDto requestDto = analysisRequestDto("Plan a trip", "museums");
 
         when(ollamaService.getResponse("Plan a trip", "museums")).thenReturn("AI response");

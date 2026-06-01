@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import lt.viko.eif.astrukcinskas.grupinis_playground.model.Hotel;
@@ -80,8 +81,11 @@ class HotelsServiceTest {
 
     @Test
     void removeHotelFromDbDeletesById() {
+        when(hotelsRepository.existsById(7)).thenReturn(true);
+
         String response = hotelsService.removeHotelFromDb(7);
 
+        verify(hotelsRepository).existsById(7);
         verify(hotelsRepository).deleteById(7);
         assertEquals("Hotel service: hotel with id: 7, deleted", response);
     }
