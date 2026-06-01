@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,9 +70,13 @@ public class AnalysisService {
         return analysis;
     }
 
-    public int saveAnalysisInDb(){
+    public int saveAnalysisInDb() throws InvalidObjectException {
 
         hotelsService.addHotelsToDb(this.analysis.getHotels());
+
+        if(analysisRepository.getReferenceById(analysis.getId()) != null){
+            throw new InvalidObjectException("Analysis service: analysis is already saved.");
+        }
 
         var response = analysisRepository.save(this.analysis);
 

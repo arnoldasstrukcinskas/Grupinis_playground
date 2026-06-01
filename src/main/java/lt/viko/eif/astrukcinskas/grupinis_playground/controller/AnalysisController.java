@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.parser.Entity;
+import java.io.InvalidObjectException;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -45,7 +46,7 @@ public class AnalysisController {
     }
 
     @PostMapping
-    public ResponseEntity<String> saveAnalysis(){
+    public ResponseEntity<String> saveAnalysis() throws InvalidObjectException {
         var response = analysisService.saveAnalysisInDb();
 
         return ResponseEntity.ok("Analysis with id: %d, saved".formatted(response));
