@@ -8,6 +8,9 @@ let browser;
 let viteServer;
 let baseUrl;
 
+/**
+ * Starts one Vite dev server and one Chromium browser for the whole frontend Cucumber run.
+ */
 BeforeAll(async function () {
   viteServer = await createServer({
     server: {
@@ -23,16 +26,25 @@ BeforeAll(async function () {
   browser = await chromium.launch({ headless: true });
 });
 
+/**
+ * Creates a fresh browser context and page for each scenario so tests do not share localStorage or cookies.
+ */
 Before(async function () {
   this.baseUrl = baseUrl;
   this.context = await browser.newContext();
   this.page = await this.context.newPage();
 });
 
+/**
+ * Closes the scenario browser context after each scenario.
+ */
 After(async function () {
   await this.context?.close();
 });
 
+/**
+ * Shuts down shared Playwright and Vite resources after all frontend scenarios finish.
+ */
 AfterAll(async function () {
   await browser?.close();
   await viteServer?.close();
