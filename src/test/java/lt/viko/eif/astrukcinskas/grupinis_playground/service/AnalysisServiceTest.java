@@ -90,7 +90,7 @@ class AnalysisServiceTest {
     }
 
     @Test
-    void saveAnalysisSavesCurrentAnalysisForAuthenticatedUser() {
+    void saveAnalysisSavesCurrentAnalysisForAuthenticatedUser() throws Exception {
         AnalysisRequestDto requestDto = analysisRequestDto("Plan a trip", "museums");
         Hotel hotel = new Hotel();
         List<Hotel> hotels = List.of(hotel);
@@ -101,10 +101,14 @@ class AnalysisServiceTest {
         when(ollamaService.getResponse("Plan a trip", "museums")).thenReturn("AI response");
         when(hotelsService.getHotels()).thenReturn(List.of(new HotelDto()));
         when(hotelsService.converterDtoToHotel(any(HotelDto.class))).thenReturn(hotel);
+        when(analysisRepository.save(any(Analysis.class))).thenAnswer(invocation -> {
+            Analysis savedAnalysis = invocation.getArgument(0);
+            savedAnalysis.setId(42);
+            return savedAnalysis;
+        });
         when(usersRepository.findByUsername("alice")).thenReturn(Optional.of(user));
 
         Analysis analysis = analysisService.generateAnalysis(requestDto);
-        analysis.setId(42);
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken("alice", "password"));
 

@@ -42,7 +42,7 @@ Feature: API workflow
     Then the response status should be 200
     And the response body should contain "User with username: bdd-user, logged out."
 
-  @known-bug
+  
   Scenario: User deletes a saved analysis
     Given the real API is running under the test profile with external integrations stubbed
     When I register user "bdd-delete-user" with password "Test1234!" and email "bdd-delete-user@example.com"

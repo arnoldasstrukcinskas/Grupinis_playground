@@ -32,12 +32,13 @@ function LocationCombobox({ value, onChange, onSelect, onConfirm, confirmed, loa
                     className={`${s.locInput} ${confirmed ? s.locConfirmed : ''}`}
                     value={value}
                     onChange={e => { onChange(e.target.value); }}
+                    aria-label="Destination"
                     placeholder="Search destination…"
                     autoComplete="off"
                     disabled={confirmed}
                 />
                 {confirmed && (
-                    <button className={s.btnLocReset} onClick={onConfirm} title="Change destination">
+                    <button className={s.btnLocReset} onClick={onConfirm} title="Change destination" aria-label="Change destination">
                         ✕
                     </button>
                 )}
@@ -63,6 +64,7 @@ function LocationCombobox({ value, onChange, onSelect, onConfirm, confirmed, loa
                     onClick={onConfirm}
                     disabled={loading || !value.trim()}
                     title="Confirm destination"
+                    aria-label="Confirm destination"
                 >
                     {loading ? <span className={s.spinnerSm} /> : '✓'}
                 </button>
@@ -607,6 +609,7 @@ export default function Chat() {
                                                 <div className={s.dateField}>
                                                     <p className={s.dateLabel}>Check-in</p>
                                                     <input className={s.dateInput} type="date"
+                                                        aria-label="Check-in date"
                                                         value={checkinDate} min={today}
                                                         onChange={e => setCheckinDate(e.target.value)} />
                                                 </div>
@@ -614,12 +617,14 @@ export default function Chat() {
                                                 <div className={s.dateField}>
                                                     <p className={s.dateLabel}>Check-out</p>
                                                     <input className={s.dateInput} type="date"
+                                                        aria-label="Check-out date"
                                                         value={checkoutDate} min={checkinDate || today}
                                                         onChange={e => setCheckoutDate(e.target.value)} />
                                                 </div>
                                                 <div className={s.dateField}>
                                                     <p className={s.dateLabel}>Adults</p>
                                                     <input className={s.dateInput} type="number"
+                                                        aria-label="Adults"
                                                         min="1" max="30" value={adultsNumber}
                                                         onChange={e => setAdultsNumber(e.target.value)}
                                                         style={{ width: '70px' }} />
@@ -636,6 +641,7 @@ export default function Chat() {
                                         <div className={s.stepContent}>
                                             <p className={s.stepLabel}>Any interests or preferences? <span className={s.optional}>(optional)</span></p>
                                             <input className={s.interestsInput} type="text"
+                                                aria-label="Interests"
                                                 value={hobbies} onChange={e => setHobbies(e.target.value)}
                                                 placeholder="e.g. museums, beach, spa, family-friendly…" />
                                         </div>
@@ -699,11 +705,12 @@ export default function Chat() {
                         {error && <p className={s.errorMsg}>{error}</p>}
                         <div className={s.inputRow}>
                             <textarea className={s.textarea} value={input}
+                                aria-label="Travel request"
                                 onChange={e => setInput(e.target.value)}
                                 onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
                                 placeholder="Ask for recommendations, comparisons, or anything about these hotels…"
                                 rows={1} disabled={loading} />
-                            <button className={s.sendBtn} onClick={handleSend} disabled={loading || !input.trim()}>
+                            <button className={s.sendBtn} onClick={handleSend} disabled={loading || !input.trim()} aria-label="Send request">
                                 {loading
                                     ? <span className={s.spinner} />
                                     : <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
