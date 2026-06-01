@@ -26,7 +26,7 @@ public class AppUser implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany
+    @OneToMany
     private List<Analysis> analyses;
 
     @Override

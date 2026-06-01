@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import tools.jackson.databind.JsonNode;
 
+import java.io.InvalidObjectException;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,22 @@ public class ExternalApiService {
         this.hotelsService = hotelsService;
     }
 
-    public List<HotelDto> getHotels(HotelRequestDto requestDto){
+    /**
+     * Gets hotels from api by given data in hotel request data transfer object
+     * @param requestDto request hotel data transfer object
+     * @return List of hotels
+     * @throws InvalidObjectException
+     */
+    public List<HotelDto> getHotels(HotelRequestDto requestDto) throws InvalidObjectException {
+
+        if (requestDto.getDestinationId() <= 0
+                || requestDto.getCheckInDate() == null || requestDto.getCheckInDate().isBlank()
+                || requestDto.getCheckOutDate() == null || requestDto.getCheckOutDate().isBlank()
+                || requestDto.getRoomNumber() <= 0
+                || requestDto.getAdultsNumber() <= 0) {
+
+            throw new InvalidObjectException("Api service: destination id, check in/out dates, room and adults numbers are missing");
+        }
 
         HotelRequestDto request = recreateRequest(requestDto);
 
@@ -64,7 +81,17 @@ public class ExternalApiService {
         return hotels;
     }
 
+    /**
+     * Gets location by given name from API
+     * @param locationName location name
+     * @return List of locations
+     */
     public List<LocationDto> getLocations(String locationName){
+
+        if (locationName.isEmpty() || locationName.isBlank()){
+            throw new InvalidParameterException("API service: missing location name");
+        }
+
         List<LocationDto> locations = restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/v1/hotels/locations")
@@ -84,6 +111,13 @@ public class ExternalApiService {
     }
 
     //Helpers
+
+    /**
+     * Method for recreating hotel request data transfer object for avoiding getting/changing bad data in
+     * already defined fields.
+     * @param requestDto request data transfer object
+     * @return
+     */
     private HotelRequestDto recreateRequest(HotelRequestDto requestDto)
     {
         HotelRequestDto refactoredRequest = new HotelRequestDto();
@@ -98,7 +132,19 @@ public class ExternalApiService {
         return refactoredRequest;
     }
 
-    private List<HotelDto> jsonDataReader(JsonNode jsonNode){
+    /**
+     * Reads data from json object and converts it to hotel data transfer object
+     * @param jsonNode hotel data in JSON
+     * @return hotel data transfer object
+     * @throws InvalidObjectException
+     */
+    private List<HotelDto> jsonDataReader(JsonNode jsonNode) throws InvalidObjectException {
+
+        if (jsonNode.isEmpty())
+        {
+            throw new InvalidObjectException("Api service: missing data");
+        }
+
         List<HotelDto> hotels = new ArrayList<>();
 
         JsonNode hotelsArray = jsonNode.path("result");

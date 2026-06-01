@@ -6,6 +6,7 @@ import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.HotelDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,13 @@ public class HotelsService {
 
     private List<HotelDto> hotels;
 
+    /**
+     * Adds all hotels from list to database
+     * @param hotels hotels list
+     * @return list of hotel data transfer objects
+     */
     public List<HotelDto> addHotelsToDb(List<Hotel> hotels){
+
         List<HotelDto> hotelsDto = new ArrayList<>();
 
         for(Hotel hotel : hotels){
@@ -30,12 +37,28 @@ public class HotelsService {
         return hotelsDto;
     }
 
-    public String removeHotelFromDb(int id){
+
+    /**
+     * Removes hotel from database
+     * @param id hotel id number
+     * @return Message of success
+     */
+    public String removeHotelFromDb(int id) throws InvalidParameterException {
+
+        if (!hotelsRepository.existsById(id)){
+            throw new InvalidParameterException("Hotel service: such hotel do not exists");
+        }
+
         hotelsRepository.deleteById(id);
 
         return "Hotel service: hotel with id: %d, deleted".formatted(id);
     }
 
+
+    /**
+     * Clears hotels from memory
+     * @return Message about success
+     */
     public String clearHotelsFromMemmory(){
         hotels = new ArrayList<>();
 
@@ -43,6 +66,12 @@ public class HotelsService {
     }
 
 //    Helpers
+
+    /**
+     * Converts hotel data transfer object to hotel
+     * @param hotelDto data transfer object
+     * @return hotel object
+     */
     public Hotel converterDtoToHotel(HotelDto hotelDto){
         Hotel hotel = new Hotel();
 
@@ -62,29 +91,18 @@ public class HotelsService {
         return hotel;
     }
 
-    public HotelDto converterHotelToDto(Hotel hotel) {
-        HotelDto hotelDto = new HotelDto();
-
-        hotelDto.setHotelName(hotel.getHotelName());
-        hotelDto.setAccomodationType(hotel.getAccomodationType());
-        hotelDto.setHotelStars(hotel.getHotelStars());
-        hotelDto.setDistrict(hotel.getDistrict());
-        hotelDto.setDistanceToCenter(hotel.getDistanceToCenter());
-        hotelDto.setBeachFront(hotel.isBeachFront());
-        hotelDto.setPrice(hotel.getPrice());
-        hotelDto.setPriceAllInclusive(hotel.getPriceAllInclusive());
-        hotelDto.setAddress(hotel.getAddress());
-        hotelDto.setMainPhotoUrl(hotel.getMainPhotoUrl());
-        hotelDto.setPhotoUrl1440(hotel.getPhotoUrl1440());
-        hotelDto.setHotelUrl(hotel.getHotelUrl());
-
-        return hotelDto;
-    }
-
+    /**
+     * Gets hotels from memmory
+     * @return list of hotel data transfer object
+     */
     public List<HotelDto> getHotels() {
         return hotels;
     }
 
+    /**
+     * Adds list of hotels to memory
+     * @param hotels list og hotel data transfer objects
+     */
     public void setHotels(List<HotelDto> hotels) {
         this.hotels = hotels;
     }

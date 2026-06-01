@@ -1,7 +1,6 @@
 package lt.viko.eif.astrukcinskas.grupinis_playground.controller;
 
 import lt.viko.eif.astrukcinskas.grupinis_playground.model.Analysis;
-import lt.viko.eif.astrukcinskas.grupinis_playground.model.Hotel;
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.AnalysisService;
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.AnalysisDto;
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.AnalysisRequestDto;
@@ -14,8 +13,8 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.parser.Entity;
 import java.io.InvalidObjectException;
+import java.security.InvalidParameterException;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -37,25 +36,71 @@ public class AnalysisController {
         this.hotelsService = hotelsService;
     }
 
+
+    /**
+     * Method for generating analysis on user data and hotels
+     * @param analysisRequestDto analysis data transfer object
+     * @return Analysis object with made analysis and analysed hotels
+     */
     @PostMapping("/analyze")
     public ResponseEntity<Analysis> generateAnalysis(@RequestBody AnalysisRequestDto analysisRequestDto){
 
-        var response = analysisService.generateAnalysis(analysisRequestDto);
+        if (analysisRequestDto == null)
+        {
+            return ResponseEntity.badRequest().build();
+        }
+        Analysis response = null;
+
+        try {
+            response = analysisService.generateAnalysis(analysisRequestDto);
+        } catch (InvalidObjectException e) {
+            return ResponseEntity.badRequest().build();
+        }
 
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Function for saving analysis in database
+     * @return Message with saved analysis id
+     */
     @PostMapping
-    public ResponseEntity<String> saveAnalysis() throws InvalidObjectException {
-        var response = analysisService.saveAnalysisInDb();
+    public ResponseEntity<String> saveAnalysis() {
+        try {
+            var response = analysisService.saveAnalysisInDb();
 
-        return ResponseEntity.ok("Analysis with id: %d, saved".formatted(response));
+            return ResponseEntity.ok("Analysis with id: %d, saved".formatted(response));
+
+        } catch (InvalidObjectException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<AnalysisDto>> getAnalysisById(@PathVariable int id){
 
-        var response = analysisService.getAnalysisById(id);
+    /**
+     * Function for getting analysis by id
+     * @param id analysis id
+     * @return Analysis data transfer object
+     * @throws InvalidObjectException
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<EntityModel<AnalysisDto>> getAnalysisById(@PathVariable int id) throws InvalidObjectException {
+
+        if (id <= 0){
+            return ResponseEntity.badRequest().build();
+        }
+
+        Analysis response;
+
+        try {
+            response = analysisService.getAnalysisById(id);
+
+        } catch (InvalidParameterException e){
+            return ResponseEntity.badRequest().build();
+
+        }
 
         AnalysisDto analysisDto = new AnalysisDto(response);
 
@@ -66,8 +111,13 @@ public class AnalysisController {
                 .withRel("hotels"));
 
         return ResponseEntity.ok(model);
+
     }
 
+    /**
+     * Function for getting all user analysis
+     * @return List of made analysis
+     */
     @GetMapping("/analyses")
     public ResponseEntity<CollectionModel<EntityModel<AnalysisDto>>> getAllUserAnalysis(){
 
@@ -80,9 +130,14 @@ public class AnalysisController {
 
                     EntityModel<AnalysisDto> model = EntityModel.of(analysisDto);
 
-                    model.add(linkTo(methodOn(AnalysisController.class)
-                            .getAnalysisHotels(analysis.getId()))
-                            .withRel("hotels"));
+                    try {
+                        model.add(linkTo(methodOn(AnalysisController.class)
+                                .getAnalysisHotels(analysis.getId()))
+                                .withRel("hotels"));
+                    } catch (InvalidObjectException e) {
+                        throw new RuntimeException(e);
+                    }
+
 
                     return model;
                 })
@@ -91,8 +146,14 @@ public class AnalysisController {
         return ResponseEntity.ok(CollectionModel.of(models));
     }
 
+    /**
+     * Function for generating links using HATEOAS to hotels in analysis
+     * @param id analysis id
+     * @return Links of hotels in analysis
+     * @throws InvalidObjectException
+     */
     @GetMapping("/{id}/hotels")
-    public ResponseEntity<CollectionModel<Link>> getAnalysisHotels(@PathVariable int id){
+    public ResponseEntity<CollectionModel<Link>> getAnalysisHotels(@PathVariable int id) throws InvalidObjectException {
 
         var analysis = analysisService.getAnalysisById(id);
 
@@ -100,17 +161,31 @@ public class AnalysisController {
                 .stream()
                 .map(hotel ->
 
-                    linkTo(methodOn(AnalysisController.class)
-                            .getAnalysisHotel(id, hotel.getId()))
-                            .withRel("Hotel"))
+                {
+                    try {
+                        return linkTo(methodOn(AnalysisController.class)
+                                .getAnalysisHotel(id, hotel.getId()))
+                                .withRel("Hotel");
+                    } catch (InvalidObjectException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .toList();
 
 
         return ResponseEntity.ok(CollectionModel.of(hotels));
     }
 
+
+    /**
+     * Function for getting link for hotel in analysis using HATEOAS
+     * @param analysisId analysis id
+     * @param hotelId hotel id
+     * @return returns List of hotel data transfer object
+     * @throws InvalidObjectException
+     */
     @GetMapping("/{analysisId}/hotels/{hotelId}")
-    public ResponseEntity<EntityModel<HotelDto>> getAnalysisHotel(@PathVariable int analysisId, @PathVariable int hotelId){
+    public ResponseEntity<EntityModel<HotelDto>> getAnalysisHotel(@PathVariable int analysisId, @PathVariable int hotelId) throws InvalidObjectException {
 
         var analysis = analysisService.getAnalysisById(analysisId);
 
@@ -132,21 +207,44 @@ public class AnalysisController {
         return ResponseEntity.ok(model);
     }
 
+    /**
+     * Removes analysis from databse
+     * @param id analysis id
+     * @return returns id of removed analysis
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Integer> removeAnalysisFromDb(@PathVariable int id){
 
-        var response = analysisService.removeAnalysisFromDb(id);
+        if (id <= 0){
+            return ResponseEntity.badRequest().build();
+        }
+
+        int response = 0;
+        try {
+            response = analysisService.removeAnalysisFromDb(id);
+        } catch (InvalidObjectException e) {
+            return ResponseEntity.badRequest().build();
+        }
 
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Clears analysis data in memory
+     * @return Message of success
+     */
     @DeleteMapping("/clearAnalysis")
     public ResponseEntity<String> clearAnalysisInMemmory(){
+
         var response = analysisService.clearAnalysis();
 
         return ResponseEntity.ok("clear");
     }
 
+    /**
+     * Clears hotels in memory
+     * @return Message of success
+     */
     @DeleteMapping("/clearHotels")
     public ResponseEntity<String> clearHotelsInMemmory(){
         var response = hotelsService.clearHotelsFromMemmory();

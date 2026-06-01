@@ -9,11 +9,13 @@ import lt.viko.eif.astrukcinskas.grupinis_playground.repository.UsersRepository;
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.AnalysisRequestDto;
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.HotelDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.InvalidObjectException;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +37,6 @@ public class AnalysisService {
     private Analysis analysis;
 
     public AnalysisService(AnalysisRepository analysisRepository,
-                           HotelsRepository hotelsRepository,
                            HotelsService hotelsService,
                            OllamaService ollamaService, UsersRepository usersRepository) {
         this.analysisRepository = analysisRepository;
@@ -44,7 +45,19 @@ public class AnalysisService {
         this.usersRepository = usersRepository;
     }
 
-    public Analysis generateAnalysis(AnalysisRequestDto analysisRequestDto){
+    /**
+     * Generates analysis from data in analysis request data transfer object and from hotels
+     * received from APi by user request
+     * @param analysisRequestDto Analysis data transfer object
+     * @return returns Analysis object.
+     * @throws InvalidObjectException
+     */
+    public Analysis generateAnalysis(AnalysisRequestDto analysisRequestDto) throws InvalidObjectException {
+
+        if (analysisRequestDto == null){
+            throw new InvalidObjectException("Analysis service: missing analysis data");
+        }
+
         Analysis analysis = new Analysis();
 
         String aiResponse = ollamaService.getResponse(analysisRequestDto.getUserPrompt(),
@@ -52,7 +65,6 @@ public class AnalysisService {
 
         List<HotelDto> hotelsDto = hotelsService.getHotels();
 
-        //For testing
         if (hotelsDto == null) {
             hotelsDto = new ArrayList<>();
         }
@@ -70,13 +82,19 @@ public class AnalysisService {
         return analysis;
     }
 
+
+    /**
+     * Function for saving analysis in database
+     * @return id of saved analysis
+     * @throws InvalidObjectException
+     */
     public int saveAnalysisInDb() throws InvalidObjectException {
 
-        hotelsService.addHotelsToDb(this.analysis.getHotels());
-
-        if(analysisRepository.getReferenceById(analysis.getId()) != null){
+        if(analysisRepository.existsById(analysis.getId())){
             throw new InvalidObjectException("Analysis service: analysis is already saved.");
         }
+
+        hotelsService.addHotelsToDb(this.analysis.getHotels());
 
         var response = analysisRepository.save(this.analysis);
 
@@ -89,28 +107,51 @@ public class AnalysisService {
         return analysis.getId();
     }
 
+    /**
+     * Gets analysis by analysis id from databas
+     * @param id analysis id
+     * @return Analysis object
+     */
+    public Analysis getAnalysisById(int id) {
 
-    public Analysis getAnalysisById(int id){
+        if (!usersRepository.existsById(id)){
+            throw new InvalidParameterException("Analysis service: such analysis do not exists");
+        }
+
         Analysis analysis = analysisRepository.getReferenceById(id);
 
         return analysis;
     }
 
+    /**
+     * Gets all user generated and saved analysis
+     * @return List of made analysis
+     */
     public List<Analysis> getAllUserAnalysis(){
+
         var user = usersRepository.findByUsername(getUsernameFromAuth());
 
         return user.get().getAnalyses();
     }
 
-    public int removeAnalysisFromDb(int id){
+    /**
+     * Removes anlysis from database by analysis id
+     * @param id analysis id
+     * @return id of removed analysis
+     * @throws InvalidObjectException
+     */
+    public int removeAnalysisFromDb(int id) throws InvalidObjectException {
+
+        if (id <= 0){
+            throw new InvalidParameterException("Analysis service: such analysis do not exists");
+        }
+
         Analysis analysis = getAnalysisById(id);
 
-        // Remove from user's analyses list FIRST (fixes foreign key constraint)
         AppUser user = usersRepository.findByUsername(getUsernameFromAuth()).orElseThrow();
         user.getAnalyses().removeIf(a -> a.getId() == id);
         usersRepository.save(user);
 
-        // Now safe to delete hotels and analysis
         List<Integer> hotelsIds = new ArrayList<>();
         List<Hotel> hotels = analysis.getHotels();
 
@@ -131,12 +172,22 @@ public class AnalysisService {
         return id;
     }
 
+
+    /**
+     * Clears analysis in memory
+     * @return Message about process.
+     */
     public String clearAnalysis(){
         this.analysis = new Analysis();
 
         return "Analysis service: analysis cleared";
     }
 
+
+    /**
+     * Method for getting user username from token in spring security
+     * @return user username
+     */
     private String getUsernameFromAuth(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
