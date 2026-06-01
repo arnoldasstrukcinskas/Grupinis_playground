@@ -31,17 +31,19 @@ import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.LocationDto;
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.ExternalApiService;
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.HotelsService;
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.OllamaService;
-import lt.viko.eif.astrukcinskas.grupinis_playground.service.authentication.JwtService;
 
+/**
+ * Step definitions for the internal API acceptance workflow.
+ *
+ * <p>The scenarios use real Spring MVC controllers and an in-memory test database,
+ * while external hotel and AI integrations are replaced with deterministic stubs.</p>
+ */
 public class ApiWorkflowSteps {
 
     private static final Pattern ANALYSIS_ID_PATTERN = Pattern.compile("Analysis with id: (\\d+), saved");
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private JwtService jwtService;
 
     @Autowired
     private HotelsService hotelsService;
@@ -67,6 +69,9 @@ public class ApiWorkflowSteps {
     private int savedAnalysisId;
     private int savedHotelId;
 
+    /**
+     * Resets test state and prepares deterministic responses for external services before each scenario.
+     */
     @Before
     public void setUp() {
         currentUsername = null;
@@ -91,11 +96,22 @@ public class ApiWorkflowSteps {
                 .thenReturn("City break analysis");
     }
 
+    /**
+     * Verifies that the Spring MVC test client was created for the acceptance scenario.
+     */
     @Given("the real API is running under the test profile with external integrations stubbed")
     public void realApiIsRunningUnderTestProfile() {
         assertNotNull(mockMvc);
     }
 
+    /**
+     * Registers a user through the real authentication endpoint.
+     *
+     * @param username username used by the scenario
+     * @param password password used by the scenario
+     * @param email email used by the scenario
+     * @throws Exception if the mock HTTP request cannot be executed
+     */
     @When("I register user {string} with password {string} and email {string}")
     public void registerUser(String username, String password, String email) throws Exception {
         currentUsername = username;
@@ -111,6 +127,13 @@ public class ApiWorkflowSteps {
                 .andReturn();
     }
 
+    /**
+     * Logs in through the authentication endpoint and stores the returned JWT for later requests.
+     *
+     * @param username username used by the scenario
+     * @param password password used by the scenario
+     * @throws Exception if the mock HTTP request cannot be executed
+     */
     @When("I login with username {string} and password {string}")
     public void login(String username, String password) throws Exception {
         currentUsername = username;
@@ -125,10 +148,16 @@ public class ApiWorkflowSteps {
                 .andReturn();
 
         if (lastResult.getResponse().getStatus() == 200) {
-            currentToken = jwtService.generateToken(username);
+            currentToken = lastResult.getResponse().getContentAsString();
         }
     }
 
+    /**
+     * Searches for locations using the authenticated hotel location endpoint.
+     *
+     * @param location city or place name to search for
+     * @throws Exception if the mock HTTP request cannot be executed
+     */
     @When("I search locations for {string}")
     public void searchLocations(String location) throws Exception {
         lastResult = mockMvc.perform(get("/hotels")
@@ -137,6 +166,12 @@ public class ApiWorkflowSteps {
                 .andReturn();
     }
 
+    /**
+     * Requests hotels for the destination returned by the location search.
+     *
+     * @param destinationId destination identifier used by the hotel search endpoint
+     * @throws Exception if the mock HTTP request cannot be executed
+     */
     @When("I request hotels for destination {int}")
     public void requestHotels(int destinationId) throws Exception {
         lastResult = mockMvc.perform(post("/hotels")
@@ -156,6 +191,13 @@ public class ApiWorkflowSteps {
                 .andReturn();
     }
 
+    /**
+     * Requests an AI analysis for the current hotel list.
+     *
+     * @param prompt user travel request sent to the analysis endpoint
+     * @param hobbies user hobbies sent to the analysis endpoint
+     * @throws Exception if the mock HTTP request cannot be executed
+     */
     @When("I request an analysis for {string} and hobbies {string}")
     public void requestAnalysis(String prompt, String hobbies) throws Exception {
         lastResult = mockMvc.perform(post("/analysis/analyze")
@@ -170,6 +212,11 @@ public class ApiWorkflowSteps {
                 .andReturn();
     }
 
+    /**
+     * Saves the generated analysis and remembers generated database identifiers for later checks.
+     *
+     * @throws Exception if the mock HTTP request cannot be executed or the saved id cannot be parsed
+     */
     @When("I save the generated analysis")
     public void saveGeneratedAnalysis() throws Exception {
         lastResult = mockMvc.perform(post("/analysis")
@@ -183,6 +230,11 @@ public class ApiWorkflowSteps {
         savedHotelId = hotelsRepository.findAll().get(0).getId();
     }
 
+    /**
+     * Fetches all analyses visible to the authenticated scenario user.
+     *
+     * @throws Exception if the mock HTTP request cannot be executed
+     */
     @When("I fetch all saved analyses")
     public void fetchAllSavedAnalyses() throws Exception {
         lastResult = mockMvc.perform(get("/analysis/analyses")
@@ -190,6 +242,11 @@ public class ApiWorkflowSteps {
                 .andReturn();
     }
 
+    /**
+     * Fetches the saved analysis by the identifier captured after saving.
+     *
+     * @throws Exception if the mock HTTP request cannot be executed
+     */
     @When("I fetch the saved analysis by id")
     public void fetchSavedAnalysisById() throws Exception {
         lastResult = mockMvc.perform(get("/analysis/{id}", savedAnalysisId)
@@ -197,6 +254,11 @@ public class ApiWorkflowSteps {
                 .andReturn();
     }
 
+    /**
+     * Fetches hotel links for the saved analysis.
+     *
+     * @throws Exception if the mock HTTP request cannot be executed
+     */
     @When("I fetch hotels for the saved analysis")
     public void fetchHotelsForSavedAnalysis() throws Exception {
         lastResult = mockMvc.perform(get("/analysis/{id}/hotels", savedAnalysisId)
@@ -204,6 +266,11 @@ public class ApiWorkflowSteps {
                 .andReturn();
     }
 
+    /**
+     * Fetches one concrete hotel from the saved analysis.
+     *
+     * @throws Exception if the mock HTTP request cannot be executed
+     */
     @When("I fetch one hotel from the saved analysis")
     public void fetchOneHotelFromSavedAnalysis() throws Exception {
         lastResult = mockMvc.perform(get("/analysis/{analysisId}/hotels/{hotelId}", savedAnalysisId, savedHotelId)
@@ -211,6 +278,11 @@ public class ApiWorkflowSteps {
                 .andReturn();
     }
 
+    /**
+     * Attempts to delete the saved analysis.
+     *
+     * @throws Exception if the mock HTTP request cannot be executed
+     */
     @When("I delete the saved analysis")
     public void deleteSavedAnalysis() throws Exception {
         lastResult = mockMvc.perform(delete("/analysis/{id}", savedAnalysisId)
@@ -218,6 +290,11 @@ public class ApiWorkflowSteps {
                 .andReturn();
     }
 
+    /**
+     * Clears the in-memory analysis value through the maintenance endpoint.
+     *
+     * @throws Exception if the mock HTTP request cannot be executed
+     */
     @When("I clear the in-memory analysis")
     public void clearInMemoryAnalysis() throws Exception {
         lastResult = mockMvc.perform(delete("/analysis/clearAnalysis")
@@ -225,6 +302,11 @@ public class ApiWorkflowSteps {
                 .andReturn();
     }
 
+    /**
+     * Clears the in-memory hotel list through the maintenance endpoint.
+     *
+     * @throws Exception if the mock HTTP request cannot be executed
+     */
     @When("I clear the in-memory hotels")
     public void clearInMemoryHotels() throws Exception {
         lastResult = mockMvc.perform(delete("/analysis/clearHotels")
@@ -232,6 +314,11 @@ public class ApiWorkflowSteps {
                 .andReturn();
     }
 
+    /**
+     * Logs out using the token captured during login.
+     *
+     * @throws Exception if the mock HTTP request cannot be executed
+     */
     @When("I logout with the current token")
     public void logoutWithCurrentToken() throws Exception {
         lastResult = mockMvc.perform(post("/auth/logout")
@@ -239,11 +326,22 @@ public class ApiWorkflowSteps {
                 .andReturn();
     }
 
+    /**
+     * Asserts the status code from the previous API response.
+     *
+     * @param statusCode expected HTTP status code
+     */
     @Then("the response status should be {int}")
     public void assertStatus(int statusCode) {
         assertEquals(statusCode, lastResult.getResponse().getStatus());
     }
 
+    /**
+     * Asserts that the previous API response contains expected text.
+     *
+     * @param expectedText text expected in the response body
+     * @throws Exception if the response body cannot be read
+     */
     @Then("the response body should contain {string}")
     public void assertResponseBodyContains(String expectedText) throws Exception {
         String content = lastResult.getResponse().getContentAsString();
@@ -251,11 +349,32 @@ public class ApiWorkflowSteps {
                 () -> "Expected response to contain [%s] but was [%s]".formatted(expectedText, content));
     }
 
+    /**
+     * Asserts that the previous API response body has the structure of a JWT.
+     *
+     * @throws Exception if the response body cannot be read
+     */
+    @Then("the response body should be a JWT token")
+    public void assertResponseBodyIsJwtToken() throws Exception {
+        String content = lastResult.getResponse().getContentAsString();
+        assertTrue(isJwt(content), () -> "Expected response to be a JWT token but was [%s]".formatted(content));
+    }
+
+    /**
+     * Asserts that the delete endpoint returns the id of the saved analysis.
+     *
+     * @throws Exception if the response body cannot be read
+     */
     @Then("the response body should equal the saved analysis id")
     public void assertResponseBodyEqualsSavedAnalysisId() throws Exception {
         assertEquals(String.valueOf(savedAnalysisId), lastResult.getResponse().getContentAsString());
     }
 
+    /**
+     * Asserts that the previous response includes a link to the saved hotel resource.
+     *
+     * @throws Exception if the response body cannot be read
+     */
     @Then("the response body should contain a link to the saved hotel")
     public void assertResponseBodyContainsSavedHotelLink() throws Exception {
         String expectedLink = "/analysis/%d/hotels/%d".formatted(savedAnalysisId, savedHotelId);
@@ -266,6 +385,10 @@ public class ApiWorkflowSteps {
 
     private String bearerToken() {
         return "Bearer " + currentToken;
+    }
+
+    private boolean isJwt(String token) {
+        return token != null && token.split("\\.").length == 3;
     }
 
     private LocationDto sampleLocation() {

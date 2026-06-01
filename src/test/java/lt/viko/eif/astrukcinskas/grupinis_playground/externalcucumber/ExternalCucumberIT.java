@@ -8,6 +8,9 @@ import org.junit.platform.suite.api.IncludeEngines;
 import org.junit.platform.suite.api.SelectClasspathResource;
 import org.junit.platform.suite.api.Suite;
 
+/**
+ * Runs the optional external Cucumber acceptance scenarios against a live application instance.
+ */
 @Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("external-features")

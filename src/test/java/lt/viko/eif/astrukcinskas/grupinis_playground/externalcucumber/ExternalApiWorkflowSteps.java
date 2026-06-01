@@ -11,22 +11,22 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.Date;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 
+/**
+ * Step definitions for the optional external API acceptance workflow.
+ *
+ * <p>These scenarios call a separately running application through HTTP and use
+ * the real configured external services, so they are intentionally run only when requested.</p>
+ */
 public class ExternalApiWorkflowSteps {
-
-    private static final String JWT_SECRET = "404E635266556A586E3272357538782F413F4428472B4B6250655368566D5971";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final HttpClient httpClient = HttpClient.newBuilder()
@@ -42,6 +42,11 @@ public class ExternalApiWorkflowSteps {
     private String token;
     private int destinationId;
 
+    /**
+     * Checks that the configured external application base URL responds before running the scenario.
+     *
+     * @throws Exception if the HTTP request cannot be executed
+     */
     @Given("the external API is available")
     public void externalApiIsAvailable() throws Exception {
         lastResponse = send(get("/api-docs").build());
@@ -49,6 +54,11 @@ public class ExternalApiWorkflowSteps {
                 () -> "Expected the running API to respond, but got: " + lastResponse.statusCode());
     }
 
+    /**
+     * Registers a unique user against the live application so repeated runs do not collide.
+     *
+     * @throws Exception if the HTTP request cannot be executed
+     */
     @When("I register a unique external user")
     public void registerUniqueExternalUser() throws Exception {
         username = "external-bdd-" + System.currentTimeMillis();
@@ -65,6 +75,11 @@ public class ExternalApiWorkflowSteps {
         lastResponse = send(postJson("/auth/register", body).build());
     }
 
+    /**
+     * Logs in as the unique external user and stores the returned JWT.
+     *
+     * @throws Exception if the HTTP request cannot be executed
+     */
     @When("I login as the external user")
     public void loginAsExternalUser() throws Exception {
         String body = """
@@ -77,10 +92,16 @@ public class ExternalApiWorkflowSteps {
         lastResponse = send(postJson("/auth/login", body).build());
 
         if (lastResponse.statusCode() == 200) {
-            token = generateToken(username);
+            token = lastResponse.body();
         }
     }
 
+    /**
+     * Searches live external locations through the running application.
+     *
+     * @param location city or place name to search for
+     * @throws Exception if the HTTP request cannot be executed
+     */
     @When("I search live locations for {string}")
     public void searchLiveLocations(String location) throws Exception {
         String encodedLocation = URLEncoder.encode(location, StandardCharsets.UTF_8);
@@ -89,6 +110,11 @@ public class ExternalApiWorkflowSteps {
                 .build());
     }
 
+    /**
+     * Requests live hotels for the first destination id captured from the location response.
+     *
+     * @throws Exception if the HTTP request cannot be executed
+     */
     @When("I request live hotels for the first destination")
     public void requestLiveHotelsForFirstDestination() throws Exception {
         LocalDate checkIn = LocalDate.now().plusDays(30);
@@ -111,6 +137,13 @@ public class ExternalApiWorkflowSteps {
                 .build());
     }
 
+    /**
+     * Requests live AI analysis for the hotels currently held by the running application.
+     *
+     * @param prompt user travel request sent to the analysis endpoint
+     * @param hobbies user hobbies sent to the analysis endpoint
+     * @throws Exception if the HTTP request cannot be executed
+     */
     @When("I request live analysis for {string} and hobbies {string}")
     public void requestLiveAnalysis(String prompt, String hobbies) throws Exception {
         String body = """
@@ -125,17 +158,41 @@ public class ExternalApiWorkflowSteps {
                 .build());
     }
 
+    /**
+     * Asserts the status code from the last live HTTP response.
+     *
+     * @param statusCode expected HTTP status code
+     */
     @Then("the external response status should be {int}")
     public void assertExternalStatus(int statusCode) {
         assertEquals(statusCode, lastResponse.statusCode(), lastResponse.body());
     }
 
+    /**
+     * Asserts that the last live HTTP response contains expected text.
+     *
+     * @param expectedText text expected in the response body
+     */
     @Then("the external response body should contain {string}")
     public void assertExternalBodyContains(String expectedText) {
         assertTrue(lastResponse.body().contains(expectedText),
                 () -> "Expected response to contain [%s] but was [%s]".formatted(expectedText, lastResponse.body()));
     }
 
+    /**
+     * Asserts that the last live response body has the structure of a JWT.
+     */
+    @Then("the external response body should be a JWT token")
+    public void assertExternalBodyIsJwtToken() {
+        assertTrue(isJwt(lastResponse.body()),
+                () -> "Expected response to be a JWT token but was [%s]".formatted(lastResponse.body()));
+    }
+
+    /**
+     * Asserts that the location response contains a destination and stores its id for hotel search.
+     *
+     * @throws Exception if the response JSON cannot be parsed
+     */
     @Then("the live location response should contain at least one destination")
     public void assertLiveLocationResponseContainsDestination() throws Exception {
         JsonNode response = readResponseJson();
@@ -147,6 +204,11 @@ public class ExternalApiWorkflowSteps {
         destinationId = firstDestination.asInt();
     }
 
+    /**
+     * Asserts that the live hotel response contains at least one hotel item.
+     *
+     * @throws Exception if the response JSON cannot be parsed
+     */
     @Then("the live hotel response should contain at least one hotel")
     public void assertLiveHotelResponseContainsHotel() throws Exception {
         JsonNode response = readResponseJson();
@@ -154,6 +216,11 @@ public class ExternalApiWorkflowSteps {
         assertTrue(response.get(0).has("hotelName"), () -> "Expected hotel item to contain hotelName: " + response);
     }
 
+    /**
+     * Asserts that the live analysis response contains a non-empty analysis field.
+     *
+     * @throws Exception if the response JSON cannot be parsed
+     */
     @Then("the live analysis response should contain non-empty analysis text")
     public void assertLiveAnalysisResponseContainsText() throws Exception {
         JsonNode response = readResponseJson();
@@ -190,14 +257,8 @@ public class ExternalApiWorkflowSteps {
         return "Bearer " + token;
     }
 
-    private String generateToken(String subject) {
-        Key key = Keys.hmacShaKeyFor(JWT_SECRET.getBytes(StandardCharsets.UTF_8));
-        return Jwts.builder()
-                .setSubject(subject)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .signWith(key)
-                .compact();
+    private boolean isJwt(String token) {
+        return token != null && token.split("\\.").length == 3;
     }
 
     private static String externalBaseUrl() {

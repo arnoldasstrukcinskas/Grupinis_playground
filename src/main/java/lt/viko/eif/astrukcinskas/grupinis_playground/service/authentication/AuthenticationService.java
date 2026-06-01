@@ -1,17 +1,16 @@
 package lt.viko.eif.astrukcinskas.grupinis_playground.service.authentication;
 
-import lt.viko.eif.astrukcinskas.grupinis_playground.model.AppUser;
-import lt.viko.eif.astrukcinskas.grupinis_playground.repository.UsersRepository;
-import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.AuthDTO.LoginDto;
-import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.AuthDTO.RegisterDto;
+import javax.security.sasl.AuthenticationException;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.security.sasl.AuthenticationException;
-import java.util.HashSet;
-import java.util.Set;
+import lt.viko.eif.astrukcinskas.grupinis_playground.model.AppUser;
+import lt.viko.eif.astrukcinskas.grupinis_playground.repository.UsersRepository;
+import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.AuthDTO.LoginDto;
+import lt.viko.eif.astrukcinskas.grupinis_playground.service.DTO.AuthDTO.RegisterDto;
 
 @Service
 public class AuthenticationService {
@@ -50,7 +49,9 @@ public class AuthenticationService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
 
         System.out.println(jwtService.generateToken(loginDto.getUsername()));
+        // String token = jwtService.generateToken(loginDto.getUsername());
 
+        // return new LoginResponseDto("User logged in", token);
         return jwtService.generateToken(loginDto.getUsername());
     }
 

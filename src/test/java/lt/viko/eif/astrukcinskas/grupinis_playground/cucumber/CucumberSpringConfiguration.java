@@ -14,12 +14,21 @@ import lt.viko.eif.astrukcinskas.grupinis_playground.GrupinisPlaygroundApplicati
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.ExternalApiService;
 import lt.viko.eif.astrukcinskas.grupinis_playground.service.OllamaService;
 
+/**
+ * Provides the Spring context used by internal Cucumber tests.
+ *
+ * <p>The configuration keeps the application behavior real while replacing slow
+ * or unstable outside integrations with mocks.</p>
+ */
 @CucumberContextConfiguration
 @SpringBootTest(classes = {GrupinisPlaygroundApplication.class, CucumberSpringConfiguration.AcceptanceTestOverrides.class})
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class CucumberSpringConfiguration {
 
+    /**
+     * Test-only bean overrides for external hotel and AI clients.
+     */
     @TestConfiguration
     static class AcceptanceTestOverrides {
 
