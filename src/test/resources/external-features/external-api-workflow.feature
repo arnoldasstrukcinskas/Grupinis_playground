@@ -7,7 +7,7 @@ Feature: External API workflow
     Then the external response status should be 200
     When I login as the external user
     Then the external response status should be 200
-    And the external response body should contain "User logged in"
+    And the external response body should be a JWT token
     When I search live locations for "Barcelona"
     Then the external response status should be 200
     And the live location response should contain at least one destination

@@ -69,7 +69,7 @@ public class ExternalApiService {
                 })
                 .retrieve()
                 .body(JsonNode.class);
-
+        System.out.println("API Response: " + response);
         List<HotelDto> hotels = jsonDataReader(response);
 
         if(hotels == null){

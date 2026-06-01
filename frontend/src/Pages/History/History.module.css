@@ -834,3 +834,74 @@
     .modalBookBtn:hover {
         background: var(--blue-l);
     }
+
+/* Text hotel cards (from AI parsed text) */
+.textGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 1.5rem;
+}
+
+.textCard {
+    background: white;
+    border: 1px solid var(--sky);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+    .textCard:hover {
+        border-color: var(--blue-l);
+        box-shadow: 0 3px 14px rgba(13,43,85,0.09);
+    }
+
+.textCardHead {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 0.7rem;
+}
+
+.textCardName {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.3;
+    flex: 1;
+}
+
+.textCardScore {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+    border-radius: 5px;
+    padding: 3px 7px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.textCardLines {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+    .textCardLines li {
+        font-size: 0.76rem;
+        color: var(--muted);
+        line-height: 1.45;
+        padding-left: 12px;
+        position: relative;
+    }
+
+        .textCardLines li::before {
+            content: '·';
+            position: absolute;
+            left: 0;
+            color: var(--blue-l);
+            font-size: 1rem;
+        }
