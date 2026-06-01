@@ -72,11 +72,16 @@ public class AnalysisService {
 
     public int saveAnalysisInDb() throws InvalidObjectException {
 
-        hotelsService.addHotelsToDb(this.analysis.getHotels());
+        if(this.analysis == null){
+            throw new InvalidObjectException("Analysis service: no analysis to save.");
+        }
 
-        if(analysisRepository.getReferenceById(analysis.getId()) != null){
+        // Tikrinkite pagal id - 0 reiškia dar neišsaugota
+        if(this.analysis.getId() != 0){
             throw new InvalidObjectException("Analysis service: analysis is already saved.");
         }
+
+        hotelsService.addHotelsToDb(this.analysis.getHotels());
 
         var response = analysisRepository.save(this.analysis);
 
